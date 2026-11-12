@@ -351,7 +351,7 @@ if (!DEMO) {
     async salvarProduto(p) { if (p.id) Object.assign(D.produtos.find((x) => x.id === p.id), p); else D.produtos.push({ ...p, id: uid() }); mudou('produtos'); },
     async statusVendedor(id, status) { D.vendedores.find((x) => x.user_id === id).status = status; mudou('vendedores'); },
     async perfil(p) { Object.assign(D.vendedores.find((x) => x.user_id === D.eu), p); mudou('vendedores'); },
-    async registrarVenda(p) { const pr = D.produtos.find((x) => x.id === p.produto_id); const v = { id: uid(), vendedor_id: D.eu, produto_id: pr.id, produto_nome: pr.nome, categoria: pr.categoria, tipo: pr.modo === 'indicacao' ? 'indicacao' : 'venda', cobranca: pr.cobranca, valor: pr.modo === 'indicacao' ? null : pr.preco, comissao: comissaoDe(pr), cliente_nome: p.cliente_nome, cliente_empresa: p.cliente_empresa, cliente_telefone: dig(p.cliente_telefone), cliente_cidade: p.cliente_cidade, obs: p.obs, comprovante: '', status: 'aguardando', motivo: '', origem_id: null, repasse_id: null, criado_em: new Date().toISOString() }; D.vendas.push(v); mudou('vendas'); return { id: v.id }; },
+    async registrarVenda(p) { const pr = D.produtos.find((x) => x.id === p.produto_id); const v = { id: uid(), vendedor_id: D.eu, produto_id: pr.id, produto_nome: pr.nome, categoria: pr.categoria, tipo: pr.modo === 'indicacao' ? 'indicacao' : 'venda', cobranca: pr.cobranca, valor: pr.modo === 'indicacao' ? null : pr.preco, comissao: comissaoDe(pr), cliente_nome: p.cliente_nome, cliente_empresa: p.cliente_empresa, cliente_telefone: dig(p.cliente_telefone), cliente_cidade: p.cliente_cidade, cliente_instagram: igLimpo(p.cliente_instagram || ''), obs: p.obs, comprovante: '', status: 'aguardando', motivo: '', origem_id: null, repasse_id: null, criado_em: new Date().toISOString() }; D.vendas.push(v); mudou('vendas'); return { id: v.id }; },
     async cancelar(id) { const v = D.vendas.find((x) => x.id === id); if (v.status !== 'aguardando') falha('nao_pode_cancelar'); v.status = 'cancelada'; mudou('vendas'); },
     async decidir(id, acao, valor, motivo) { const v = D.vendas.find((x) => x.id === id); if (v.repasse_id) falha('ja_pago'); const pr = D.produtos.find((x) => x.id === v.produto_id);
       if (acao === 'confirmar') { if (v.tipo === 'indicacao') { if (!(valor > 0)) falha('valor_obrigatorio'); v.valor = valor; v.comissao = pr.comissao_tipo === 'fixo' ? +pr.comissao_valor : Math.round(valor * pr.comissao_valor) / 100; } v.status = 'confirmada'; v.motivo = ''; }
@@ -597,7 +597,7 @@ function dVendas(T) {
   if (!F.some(([k]) => k === S.filtro)) S.filtro = 'aguardando';
   const q = S.busca.toLowerCase();
   const l = S.vendas.filter((v) => S.filtro === 'todas' || (S.filtro === 'indicacao' ? v.tipo === 'indicacao' && ['aguardando', 'negociando'].includes(v.status) : S.filtro === 'aguardando' ? v.status === 'aguardando' && v.tipo !== 'indicacao' : S.filtro === 'recusada' ? ['recusada', 'perdida', 'cancelada'].includes(v.status) : v.status === S.filtro))
-    .filter((v) => !q || [v.cliente_nome, v.cliente_empresa, v.produto_nome, nomeV(v.vendedor_id), v.cliente_telefone].join(' ').toLowerCase().includes(q));
+    .filter((v) => !q || [v.cliente_nome, v.cliente_empresa, v.produto_nome, nomeV(v.vendedor_id), v.cliente_telefone, v.cliente_instagram || ''].join(' ').toLowerCase().includes(q));
   T.innerHTML = topo('Vendas', 'Confira o pagamento e confirme para liberar a comissão') + `<div class="filtros">${F.map(([k, t]) => `<button data-f="${k}" class="${S.filtro === k ? 'on' : ''}">${t}</button>`).join('')}<input id="busca" placeholder="Buscar cliente, vendedor ou produto" value="${esc(S.busca)}"></div>
     <div class="card"><div class="lista">${l.map((v) => linhaVenda(v, true)).join('') || '<div class="vazio">Nada por aqui.</div>'}</div></div>`;
   $$('[data-f]', T).forEach((b) => (b.onclick = () => { S.filtro = b.dataset.f; desenhar(); }));
@@ -665,19 +665,21 @@ function abrirQR(p) {
     <div class="m-acoes"><button class="btn b-linha" id="qCop"><svg class="ico"><use href="#i-copia"/></svg>Copiar link</button><button class="btn b-verde" id="qReg"><svg class="ico"><use href="#i-mais"/></svg>Cliente pagou: registrar venda</button></div>`);
   $('#qCop').onclick = () => copiar(link, 'Link copiado'); $('#qReg').onclick = () => abrirRegistro(p.id);
 }
+const igLimpo = (s) => String(s || '').trim().toLowerCase().replace(/^.*instagram\.com\//, '').replace(/\?.*$/, '').replace(/[@\/\s]/g, '').slice(0, 60);
 function abrirRegistro(pid) {
   const p = S.produtos.find((x) => x.id === pid), ind = p.modo === 'indicacao';
   modal(cab(ind ? 'Indicar cliente' : 'Registrar venda', `${esc(p.nome)}${ind ? '' : ' · ' + brl(p.preco) + ' · você ganha ' + brl(comissaoDe(p))}`) + `
     <p class="erro-msg" id="rErro" hidden></p>
     <div class="duas"><label class="campo"><span>Nome do cliente</span><input id="rNome" autocomplete="off"></label><label class="campo"><span>WhatsApp do cliente</span><input id="rTel" inputmode="tel" placeholder="(47) 99999-9999"></label></div>
     <div class="duas"><label class="campo"><span>Estabelecimento</span><input id="rEmp" placeholder="Nome do negócio"></label><label class="campo"><span>Cidade</span><input id="rCid"></label></div>
+    <label class="campo"><span>Instagram do cliente (opcional)</span><input id="rIg" autocomplete="off" autocapitalize="off" placeholder="@perfildocliente"></label>
     ${ind ? '' : `<label class="arquivo" id="rArqL"><svg class="ico"><use href="#i-clip"/></svg><span id="rArqT">Anexar print do pagamento (recomendado)</span><input type="file" id="rArq" accept="image/*,application/pdf"></label><div style="height:12px"></div>`}
     <label class="campo"><span>Observação (opcional)</span><textarea id="rObs" placeholder="${ind ? 'O que o cliente precisa? Melhor horário para falar com ele...' : 'Algo que a AtlasHub precise saber sobre o cliente'}"></textarea></label>
     <button class="btn b-verde" style="width:100%" id="rOk">${ind ? 'Enviar indicação' : 'Registrar venda'}</button>`);
   $('#rArq') && ($('#rArq').onchange = (e) => { const f = e.target.files[0]; $('#rArqT').textContent = f ? f.name : 'Anexar print do pagamento (recomendado)'; });
   $('#rOk').onclick = async () => {
     const b = $('#rOk'), err = $('#rErro'); err.hidden = true;
-    const dados = { produto_id: p.id, cliente_nome: $('#rNome').value.trim(), cliente_telefone: dig($('#rTel').value), cliente_empresa: $('#rEmp').value.trim(), cliente_cidade: $('#rCid').value.trim(), obs: $('#rObs').value.trim() };
+    const dados = { produto_id: p.id, cliente_nome: $('#rNome').value.trim(), cliente_telefone: dig($('#rTel').value), cliente_empresa: $('#rEmp').value.trim(), cliente_cidade: $('#rCid').value.trim(), cliente_instagram: igLimpo($('#rIg').value), obs: $('#rObs').value.trim() };
     const arq = $('#rArq')?.files[0];
     if (dados.cliente_nome.length < 2) { err.hidden = false; err.textContent = 'Informe o nome do cliente.'; return; }
     if (dados.cliente_telefone.length < 10) { err.hidden = false; err.textContent = 'Informe o WhatsApp do cliente com DDD.'; return; }
@@ -695,6 +697,7 @@ async function abrirVenda(id) {
     <div class="det">
       <div><span>Cliente</span><b>${esc(v.cliente_nome)}</b></div><div><span>WhatsApp</span><b>${esc(fone(v.cliente_telefone))}</b></div>
       ${v.cliente_cidade ? `<div><span>Cidade</span><b>${esc(v.cliente_cidade)}</b></div>` : ''}
+      ${v.cliente_instagram ? `<div><span>Instagram</span><b><a href="https://instagram.com/${encodeURIComponent(v.cliente_instagram)}" target="_blank" rel="noopener" style="color:var(--verde)">@${esc(v.cliente_instagram)}</a></b></div>` : ''}
       <div><span>Valor</span><b>${v.valor != null ? brl(v.valor) + (v.cobranca === 'mensal' ? '/mês' : '') : 'A definir na proposta'}</b></div>
       <div><span>Comissão</span><b style="color:var(--verde)">${v.comissao != null ? brl(v.comissao) : 'Definida quando fechar'}</b></div>
       ${dono ? `<div><span>Vendedor</span><b>${esc(ve?.nome || '')} (${esc(ve?.codigo || '')})</b></div>` : ''}
