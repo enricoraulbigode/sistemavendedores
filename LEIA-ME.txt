@@ -1,0 +1,32 @@
+ATLASHUB · SISTEMA DE VENDAS (vendedores externos)
+=================================================
+O banco (Supabase) já está pronto: projeto "atlashub-vendas" na conta do Enrico.
+Todos os arquivos ficam soltos, sem pastas.
+
+1) SUPABASE (antes de publicar) — supabase.com > projeto atlashub-vendas
+   a) Authentication > Sign In / Providers > Email: desligue "Confirm email" > Save
+      (assim o vendedor entra logo após o cadastro; quem libera o acesso são vocês, aprovando no painel)
+   b) Authentication > Users > Add user > Create new user (marque "Auto Confirm User"):
+      - enrico13garcia@gmail.com  (senha que o Enrico escolher)
+      - otaviodavi9999@gmail.com  (senha que o Otávio escolher)
+      Esses dois e-mails são os DONOS. Crie os dois ANTES de divulgar o link.
+
+2) GITHUB: repositório novo (ex.: atlashub-vendas) > "uploading an existing file"
+   > selecione TODOS os arquivos desta pasta > Commit changes
+
+3) VERCEL: Add New > Project > importe o repositório > Framework Preset: Other > Deploy
+
+4) SUPABASE (depois de publicar) — Authentication > URL Configuration
+   - Site URL: o link da Vercel (ex.: https://atlashub-vendas.vercel.app)
+   - Redirect URLs > Add URL: o mesmo link
+   (necessário para o "Esqueci minha senha")
+
+5) NO SISTEMA (entrando como dono)
+   - Produtos: cole o link de pagamento da Stripe de cada produto, crie os combos e ajuste as comissões
+   - Mande o link do sistema para os vendedores: eles tocam em "Quero vender" e se cadastram
+   - Vendedores: aprove cada um
+
+Rotina diária
+   - Vendas: confira o pagamento (Stripe / print anexado) e toque em "Pagamento conferido: confirmar"
+   - Pagar: faça o Pix de cada vendedor e toque em "Já paguei" (até 23h59)
+   - Mensalidades: quando o cliente de social media pagar o mês, toque em "Registrar mês pago"

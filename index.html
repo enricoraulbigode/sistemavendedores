@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AtlasHub · Vendas</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0f3d26">
+<link rel="icon" href="icone-192.png"><link rel="apple-touch-icon" href="icone-180.png"><link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+<style>
+:root{--papel:#f4f4ef;--branco:#fff;--tinta:#111a14;--cinza:#5f6b63;--linha:#e2e5dd;--verde:#1d6b45;--verde-2:#145233;--escuro:#0f3d26;--menta:#8ef0b8;--menta-2:#d8f7e5;--ouro:#e9a23b;--erro:#c8473d;--azul:#2f6fd6;
+  --f:Montserrat,system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{font-family:var(--f);background:var(--papel);color:var(--tinta);line-height:1.5;overflow-x:clip;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.ico{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:13px 18px;font-weight:700;font-size:14.5px;transition:transform .15s,background .2s,opacity .2s;white-space:nowrap;text-decoration:none}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.b-verde{background:var(--verde);color:#fff}.b-verde:hover{background:var(--verde-2)}
+.b-escuro{background:var(--escuro);color:#fff}
+.b-menta{background:var(--menta);color:var(--escuro)}
+.b-linha{background:#fff;border:1.5px solid var(--linha);color:var(--tinta)}
+.b-zap{background:#25d366;color:#04301a}
+.b-erro{background:#fff;border:1.5px solid #f1cdc9;color:var(--erro)}
+.b-peq{padding:9px 13px;font-size:13px;border-radius:11px}
+.campo{display:block;margin-bottom:13px}
+.campo>span{display:block;font-weight:700;font-size:13px;margin-bottom:6px}
+.campo input,.campo select,.campo textarea{width:100%;border:1.5px solid var(--linha);border-radius:12px;padding:12px 13px;background:#fff;outline:0;font-size:16px}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--verde)}
+.campo textarea{min-height:80px;resize:vertical}
+.campo small{display:block;color:var(--cinza);font-size:12px;margin-top:5px}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.erro-msg{background:#fbecea;color:var(--erro);border-radius:12px;padding:10px 12px;font-size:13.5px;font-weight:600;margin-bottom:12px}
+.ok-msg{background:var(--menta-2);color:var(--verde-2);border-radius:12px;padding:10px 12px;font-size:13.5px;font-weight:600;margin-bottom:12px}
+
+/* ===== entrada ===== */
+.entrada{min-height:100svh;display:grid;grid-template-columns:1.1fr 1fr}
+.e-arte{background:var(--escuro);color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.e-arte .globo{position:absolute;right:-18%;top:-10%;width:85%;opacity:.13}
+.e-arte img.lg{width:200px;position:relative}
+.e-arte h1{font-size:clamp(40px,4.6vw,64px);line-height:.98;font-weight:900;letter-spacing:-.02em;position:relative}
+.e-arte h1 span{color:var(--menta)}
+.e-arte p{color:#bfe3cf;max-width:440px;margin-top:16px;position:relative;font-weight:500}
+.e-lista{display:grid;gap:10px;position:relative}
+.e-lista div{display:flex;gap:12px;align-items:center;font-weight:600}
+.e-lista i{width:30px;height:30px;border-radius:50%;background:rgba(142,240,184,.15);color:var(--menta);display:grid;place-items:center;font-style:normal;flex:none}
+.e-form{display:grid;place-items:center;padding:30px 20px}
+.e-caixa{width:min(420px,100%)}
+.e-caixa .lg-m{display:none;width:150px;margin:0 auto 22px}
+.abas-e{display:grid;grid-template-columns:1fr 1fr;background:#e8ebe3;border-radius:14px;padding:4px;margin-bottom:20px}
+.abas-e button{border:0;background:none;border-radius:11px;padding:11px;font-weight:700;color:var(--cinza)}
+.abas-e button.on{background:#fff;color:var(--tinta);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.e-caixa h2{font-size:26px;font-weight:800;margin-bottom:4px}
+.e-caixa>p{color:var(--cinza);margin-bottom:18px;font-size:14.5px}
+.link-peq{display:block;text-align:center;margin-top:14px;font-size:13.5px;font-weight:700;color:var(--verde);background:none;border:0;width:100%}
+.aviso-demo{margin-top:18px;background:#fff;border:1.5px dashed var(--linha);border-radius:14px;padding:12px;font-size:13px;color:var(--cinza)}
+.aviso-demo .duas{margin-top:10px}
+@media (max-width:900px){.entrada{grid-template-columns:1fr}.e-arte{display:none}.e-caixa .lg-m{display:block}}
+
+/* ===== app ===== */
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100svh}
+.lado{background:var(--escuro);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100svh}
+.lado .lg{padding:4px 10px 6px}.lado .lg img{width:150px}
+.lado .papel{margin:0 10px 18px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--menta);font-weight:800}
+.nav{display:flex;align-items:center;gap:12px;border:0;background:none;color:#bfe3cf;padding:12px;border-radius:12px;font-weight:700;font-size:14.5px;text-align:left;width:100%;position:relative}
+.nav:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav.on{background:var(--menta);color:var(--escuro)}
+.nav .bdg{margin-left:auto;background:var(--ouro);color:#2a1a00;font-size:11px;font-weight:800;border-radius:999px;padding:2px 8px}
+.lado .rodape{margin-top:auto;display:grid;gap:4px}
+.main{padding:28px 32px 110px;min-width:0;max-width:1240px}
+.topo{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.topo h1{font-size:30px;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+.topo small{display:block;color:var(--cinza);font-size:14px;font-weight:500}
+.topo .acoes{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.topo-m{display:none}
+@media (max-width:960px){
+  .app{grid-template-columns:1fr}
+  .lado{position:fixed;inset:auto 0 0 0;height:auto;flex-direction:row;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:60;gap:2px;justify-content:space-around;box-shadow:0 -8px 30px rgba(0,0,0,.18)}
+  .lado .lg,.lado .papel,.lado .rodape{display:none}
+  .nav{flex-direction:column;gap:3px;font-size:10.5px;padding:8px 2px;text-align:center;flex:1;border-radius:10px}
+  .nav .bdg{position:absolute;top:2px;right:16%;margin:0;padding:1px 6px;font-size:10px}
+  .main{padding:0 14px 110px}
+  .topo-m{display:flex;align-items:center;gap:10px;background:var(--escuro);margin:0 -14px 18px;padding:14px 14px 16px;color:#fff;position:sticky;top:0;z-index:40}
+  .topo-m img{height:30px}
+  .topo-m .sair{margin-left:auto;background:rgba(255,255,255,.1);border:0;color:#fff;border-radius:10px;padding:8px 10px;font-weight:700;font-size:12.5px}
+  .topo h1{font-size:25px}
+}
+
+/* cartões */
+.grade{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+@media (max-width:1100px){.g4{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:700px){.g3,.g2{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.kpi b{white-space:nowrap;font-size:clamp(16px,5.2vw,26px);word-break:normal}.card{padding:15px 15px}}
+.card{background:#fff;border:1px solid var(--linha);border-radius:20px;padding:18px 20px}
+.card h3{font-size:15px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card h3 .mais{margin-left:auto;font-size:12.5px;color:var(--verde);background:none;border:0;font-weight:800}
+.kpi span{font-size:12.5px;font-weight:700;color:var(--cinza)}
+.kpi b{display:block;font-size:clamp(22px,2.2vw,30px);font-weight:900;letter-spacing:-.02em;line-height:1.15;margin-top:4px;word-break:break-word}
+.kpi small{font-size:12px;color:var(--cinza);font-weight:500}
+.kpi.dest{background:var(--escuro);border-color:var(--escuro);color:#fff}.kpi.dest span,.kpi.dest small{color:#bfe3cf}.kpi.dest b{color:var(--menta)}
+.hero-v{background:linear-gradient(135deg,#1d6b45,#0f3d26);color:#fff;border-radius:24px;padding:24px;position:relative;overflow:hidden;margin-bottom:14px}
+.hero-v::after{content:"";position:absolute;right:-30px;bottom:-60px;width:220px;height:220px;border:22px solid rgba(142,240,184,.12);border-radius:50%}
+.hero-v span{font-weight:700;color:#bfe3cf;font-size:14px}
+.hero-v b{display:block;font-size:clamp(40px,7vw,60px);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin:4px 0 10px;color:#fff}
+.hero-v p{font-size:13.5px;color:#d8f7e5;max-width:420px;position:relative;z-index:1}
+.hero-v .pix{display:inline-flex;margin-top:12px;background:rgba(255,255,255,.12);border-radius:10px;padding:7px 11px;font-size:12.5px;font-weight:700;position:relative;z-index:1}
+.lista .item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px 2px;border-bottom:1px solid var(--linha)}
+.lista .item:last-child{border-bottom:0}
+.lista .item.cl{cursor:pointer}.lista .item.cl:hover{background:#fafbf8}
+.item b{display:block;font-size:14.5px}
+.item .sub{font-size:12.5px;color:var(--cinza);font-weight:500}
+.item .dir{text-align:right}
+.item .dir b{font-size:15px}
+.vazio{color:var(--cinza);font-size:14px;text-align:center;padding:22px 10px;border:1.5px dashed var(--linha);border-radius:14px}
+.chip{display:inline-flex;align-items:center;font-size:11.5px;font-weight:800;border-radius:999px;padding:4px 9px;white-space:nowrap}
+.st-aguardando{background:#fff3df;color:#a2620c}.st-negociando{background:#e5efff;color:#2556a8}.st-confirmada{background:var(--menta-2);color:var(--verde-2)}
+.st-recusada,.st-perdida{background:#fbecea;color:var(--erro)}.st-cancelada{background:#eef0ec;color:var(--cinza)}.st-pago{background:var(--escuro);color:var(--menta)}
+.filtros{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.filtros button{border:1.5px solid var(--linha);background:#fff;border-radius:999px;padding:8px 13px;font-weight:700;font-size:13px;color:var(--cinza)}
+.filtros button.on{background:var(--escuro);border-color:var(--escuro);color:#fff}
+.filtros input{margin-left:auto;border:1.5px solid var(--linha);border-radius:999px;padding:9px 14px;min-width:220px;outline:0;background:#fff}
+@media (max-width:700px){.filtros input{margin-left:0;width:100%}.filtros{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.filtros button{flex:none}.filtros:has(input){flex-wrap:wrap}}
+
+/* produtos */
+.prod{background:#fff;border:1px solid var(--linha);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.prod .topo-p{display:flex;gap:12px;align-items:flex-start}
+.prod .tag{width:46px;height:46px;border-radius:14px;background:var(--menta-2);color:var(--verde);display:grid;place-items:center;flex:none}
+.prod h3{font-size:18px;font-weight:800;line-height:1.2}
+.prod .desc{font-size:13.5px;color:var(--cinza);font-weight:500}
+.prod .valores{display:flex;gap:10px;flex-wrap:wrap}
+.prod .valores div{flex:1;min-width:120px;background:var(--papel);border-radius:14px;padding:10px 12px}
+.prod .valores small{display:block;font-size:11.5px;font-weight:700;color:var(--cinza)}
+.prod .valores b{font-size:18px;font-weight:900}
+.prod .valores .ganho{background:var(--menta-2)}.prod .valores .ganho b{color:var(--verde-2)}
+.prod .rec{font-size:12.5px;color:var(--verde-2);font-weight:700}
+.prod .bts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.prod .bts .full{grid-column:1/-1}
+.sem-link{font-size:12.5px;color:#a2620c;background:#fff3df;border-radius:10px;padding:8px 10px;font-weight:600}
+
+/* tabela */
+.tab-wrap{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:14px}
+.tab th{text-align:left;color:var(--cinza);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;padding:10px 8px;border-bottom:1px solid var(--linha);white-space:nowrap}
+.tab td{padding:12px 8px;border-bottom:1px solid var(--linha);white-space:nowrap}
+.tab tr:last-child td{border-bottom:0}
+.tab td.num,.tab th.num{text-align:right}
+.barras{display:flex;align-items:flex-end;gap:10px;height:180px;padding-top:10px}
+.barras .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%}
+.barras .pilha{flex:1;width:100%;display:flex;align-items:flex-end;gap:4px;justify-content:center}
+.barras .b{width:min(28px,40%);border-radius:7px 7px 3px 3px;background:var(--verde);min-height:3px;transition:height .6s cubic-bezier(.2,.8,.2,1)}
+.barras .b.c{background:var(--menta)}
+.barras small{font-size:11.5px;font-weight:700;color:var(--cinza)}
+.legenda{display:flex;gap:14px;font-size:12px;font-weight:700;color:var(--cinza);margin-top:8px}
+.legenda i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.rank{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--linha)}
+.rank:last-child{border-bottom:0}
+.rank .pos{width:30px;height:30px;border-radius:50%;background:var(--papel);display:grid;place-items:center;font-weight:900;font-size:13px}
+.rank.eu{background:var(--menta-2);border-radius:12px;padding:9px 8px;border:0}
+.rank .n{margin-left:auto;font-weight:800}
+.passos{display:grid;gap:10px;counter-reset:p}
+.passos div{display:flex;gap:12px;align-items:flex-start;font-size:14px;font-weight:500}
+.passos div::before{counter-increment:p;content:counter(p);width:26px;height:26px;border-radius:50%;background:var(--escuro);color:var(--menta);display:grid;place-items:center;font-weight:800;font-size:12.5px;flex:none}
+
+/* modal */
+.veu{position:fixed;inset:0;z-index:90;background:rgba(10,30,18,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.veu.on{opacity:1;pointer-events:auto}
+.modal{background:#fff;border-radius:24px;width:min(560px,100%);max-height:calc(100svh - 28px);overflow:auto;padding:22px;transform:translateY(16px);transition:transform .25s}
+.veu.on .modal{transform:none}
+.modal .m-topo{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.modal h2{font-size:22px;font-weight:900;letter-spacing:-.01em;line-height:1.15}
+.modal .m-topo small{display:block;color:var(--cinza);font-size:13px;font-weight:600}
+.modal .x{margin-left:auto;border:0;background:var(--papel);width:38px;height:38px;border-radius:50%;font-size:20px;flex:none}
+.det{background:var(--papel);border-radius:16px;padding:12px 14px;margin-bottom:14px}
+.det div{display:flex;justify-content:space-between;gap:14px;padding:5px 0;font-size:14px}
+.det div span{color:var(--cinza);font-weight:600}
+.det div b{text-align:right;word-break:break-word}
+.m-acoes{display:flex;flex-wrap:wrap;gap:8px}
+.qr{display:grid;place-items:center;padding:10px 0 14px}
+.qr .moldura{background:#fff;border:1px solid var(--linha);border-radius:22px;padding:16px;box-shadow:0 18px 40px rgba(15,61,38,.12)}
+.qr svg,.qr img{width:min(280px,70vw);height:auto;display:block}
+.qr p{font-size:13px;color:var(--cinza);text-align:center;margin-top:12px;max-width:320px;font-weight:500}
+.arquivo{display:flex;align-items:center;gap:10px;border:1.5px dashed var(--linha);border-radius:12px;padding:12px;font-size:13.5px;color:var(--cinza);font-weight:600;cursor:pointer}
+.arquivo input{display:none}
+.toast{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:120;display:grid;gap:8px;width:min(420px,calc(100% - 24px))}
+.toast div{background:var(--escuro);color:#fff;border-radius:16px;padding:13px 16px;box-shadow:0 16px 40px rgba(0,0,0,.25);font-size:14px;animation:entra .35s cubic-bezier(.2,1.3,.4,1)}
+.toast div b{display:block;color:var(--menta)}
+@keyframes entra{from{transform:translateY(-30px);opacity:0}}
+.carregando{min-height:100svh;display:grid;place-items:center;color:var(--cinza);font-weight:700}
+.espera{min-height:100svh;display:grid;place-items:center;padding:20px;text-align:center}
+.espera .card{max-width:440px;padding:30px 24px}
+.espera img{width:150px;margin:0 auto 18px}
+.espera h2{font-size:24px;font-weight:900;margin-bottom:8px}
+.espera p{color:var(--cinza);margin-bottom:16px}
+.barra-demo{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:70;background:#111a14;color:#fff;border-radius:999px;padding:6px;display:flex;gap:4px;font-size:12.5px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.barra-demo span{padding:6px 10px;color:var(--menta);font-weight:800}
+.barra-demo button{border:0;border-radius:999px;padding:7px 12px;background:rgba(255,255,255,.1);color:#fff;font-weight:700}
+.barra-demo button.on{background:var(--menta);color:var(--escuro)}
+@media (min-width:961px){.barra-demo{bottom:18px}}
+.entra{animation:sobe .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sobe{from{opacity:0;transform:translateY(14px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-casa" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></symbol>
+  <symbol id="i-caixa" viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/></symbol>
+  <symbol id="i-lista" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></symbol>
+  <symbol id="i-din" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="3"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></symbol>
+  <symbol id="i-gente" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0M16 4.6a3.5 3.5 0 010 6.8M21.5 20a6.5 6.5 0 00-4-6"/></symbol>
+  <symbol id="i-graf" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-rep" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 013-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 01-3 3H3"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></symbol>
+  <symbol id="i-copia" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4a1 1 0 01-1-1V4a1 1 0 011-1h10a1 1 0 011 1v1"/></symbol>
+  <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-sair" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><path d="M21 11.5l-8.6 8.6a5 5 0 01-7.1-7.1l8.6-8.6a3.4 3.4 0 014.8 4.8L10 17.9a1.7 1.7 0 01-2.4-2.4l8-8"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.3-.4.2-.4.7-1.4a.5.5 0 000-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.9 11.9 0 004.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 001.9-1.3 2.3 2.3 0 00.2-1.3c-.1-.1-.3-.2-.6-.3z"/></symbol>
+  <symbol id="i-site" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="3"/><path d="M2.5 9h19M6 6.5h.01M8.5 6.5h.01"/></symbol>
+  <symbol id="i-sis" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></symbol>
+  <symbol id="i-social" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></symbol>
+  <symbol id="i-ia" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="4"/><path d="M12 3v4M9 12h.01M15 12h.01M9.5 15.5h5"/></symbol>
+  <symbol id="i-auto" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+  <symbol id="i-combo" viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 1-5 4.8 1.2 7L12 18l-6.2 3.3L7 14.3 2 9.5l7-1z"/></symbol>
+  <symbol id="i-globo" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" stroke-width="3"/><ellipse cx="50" cy="50" rx="20" ry="46" stroke-width="3"/><path d="M4 50h92M10 28h80M10 72h80" stroke-width="3"/></symbol>
+</svg>
+<div id="raiz"><div class="carregando">Carregando...</div></div>
+<div class="veu" id="veu"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+// =====================================================================
+// AtlasHub · Vendas — vendedores externos + painel dos donos
+// =====================================================================
+const CFG = window.AH_CFG || {};
+const DEMO = !CFG.url || !CFG.anon;           // sem config.js → modo demonstração
+const DONOS_WHATS = '5547988486823';          // Enrico (indicações de Agente de IA e Automações)
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const brl = (v) => (+v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const num = (s) => { const n = parseFloat(String(s ?? '').replace(/\./g, '').replace(',', '.')); return isNaN(n) ? null : n; };
+const dig = (s) => String(s || '').replace(/\D/g, '');
+const fone = (d) => (d = dig(d), d.length === 11 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : d.length === 10 ? `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}` : d);
+const wa = (n, m) => `https://wa.me/${n ? (dig(n).length <= 11 ? '55' : '') + dig(n) : ''}?text=${encodeURIComponent(m)}`; // mensagens sem asteriscos
+const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+const data = (iso) => { const d = new Date(iso); return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`; };
+const dataHora = (iso) => { const d = new Date(iso); return `${data(iso)} às ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
+const doMes = (iso, ref = new Date()) => { const d = new Date(iso); return d.getMonth() === ref.getMonth() && d.getFullYear() === ref.getFullYear(); };
+const ICO = { site: 'i-site', sistema: 'i-sis', social: 'i-social', ia: 'i-ia', automacao: 'i-auto', combo: 'i-combo', outro: 'i-caixa' };
+const CATN = { site: 'Site', sistema: 'Sistema', social: 'Social media', ia: 'Agente de IA', automacao: 'Automação', combo: 'Combo', outro: 'Outro' };
+const STN = { aguardando: 'Aguardando', negociando: 'Em negociação', confirmada: 'Confirmada', recusada: 'Recusada', perdida: 'Não fechou', cancelada: 'Cancelada' };
+const PIXN = { cpf: 'CPF', cnpj: 'CNPJ', email: 'E-mail', telefone: 'Telefone', aleatoria: 'Chave aleatória' };
+const ERROS = { sem_permissao: 'Sem permissão para isso.', produto_invalido: 'Esse produto não está disponível.', telefone_invalido: 'Informe o WhatsApp do cliente com DDD.', nome_invalido: 'Informe o nome do cliente.', muitas_vendas: 'Muitos registros em pouco tempo. Tente de novo mais tarde.', nao_pode_cancelar: 'Essa venda já foi analisada e não pode mais ser cancelada.', ja_pago: 'Essa comissão já foi paga.', valor_obrigatorio: 'Informe o valor fechado com o cliente.', nada_a_pagar: 'Não há valor a pagar para esse vendedor.', ja_cadastrado: 'Esse cadastro já existe.', 'Invalid login credentials': 'E-mail ou senha incorretos.', 'User already registered': 'Esse e-mail já tem cadastro. Use a aba Entrar.', 'Password should be': 'A senha precisa ter pelo menos 6 caracteres.', 'Email not confirmed': 'Confirme seu e-mail pelo link que enviamos antes de entrar.', 'rate limit': 'Muitas tentativas. Espere alguns minutos e tente de novo.' };
+const erroTxt = (e) => { const m = (e && (e.message || e.error_description)) || String(e || ''); const k = Object.keys(ERROS).find((x) => m.includes(x)); return k ? ERROS[k] : /fetch|network|Failed/i.test(m) ? 'Sem conexão. Confira a internet e tente de novo.' : 'Não foi possível concluir agora. Tente de novo.'; };
+const comissaoDe = (p) => p.modo === 'indicacao' ? null : p.comissao_tipo === 'fixo' ? +p.comissao_valor : Math.round((+p.preco || 0) * +p.comissao_valor) / 100;
+const linkVendedor = (p, cod) => p.link ? p.link + (p.link.includes('?') ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(cod) : '';
+
+// =====================================================================
+// DADOS — Supabase (publicado) ou memória (demonstração)
+// =====================================================================
+let sb = null;
+const API = {};
+if (!DEMO) {
+  const carregarLib = () => new Promise((ok, erro) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js'; s.onload = ok; s.onerror = erro; document.head.appendChild(s); });
+  const r = (q) => q.then(({ data, error }) => { if (error) throw error; return data; });
+  Object.assign(API, {
+    async iniciar() { await carregarLib(); sb = window.supabase.createClient(CFG.url, CFG.anon, { auth: { persistSession: true, storageKey: 'ah-vendas' } }); },
+    async sessao() {
+      const { data: { session } } = await sb.auth.getSession(); if (!session) return null;
+      const u = session.user;
+      if (await r(sb.rpc('e_dono'))) return { tipo: 'dono', email: u.email, id: u.id };
+      let v = await r(sb.from('vendedores').select('*').eq('user_id', u.id).maybeSingle());
+      if (!v && u.user_metadata && u.user_metadata.cadastro) { await r(sb.rpc('cadastrar_vendedor', { p: u.user_metadata.cadastro })); v = await r(sb.from('vendedores').select('*').eq('user_id', u.id).maybeSingle()); }
+      return v ? { tipo: 'vendedor', email: u.email, id: u.id, perfil: v } : { tipo: 'novo', email: u.email, id: u.id };
+    },
+    async entrar(email, senha) { const { error } = await sb.auth.signInWithPassword({ email, password: senha }); if (error) throw error; },
+    async criarConta(email, senha, cadastro) {
+      const { data, error } = await sb.auth.signUp({ email, password: senha, options: { data: { cadastro }, emailRedirectTo: location.origin + location.pathname } });
+      if (error) throw error; return !!data.session;
+    },
+    async cadastrar(cadastro) { await r(sb.rpc('cadastrar_vendedor', { p: cadastro })); },
+    async sair() { await sb.auth.signOut(); },
+    async esqueci(email) { const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }); if (error) throw error; },
+    async novaSenha(s) { const { error } = await sb.auth.updateUser({ password: s }); if (error) throw error; },
+    produtos: () => r(sb.from('produtos').select('*').order('ordem').order('nome')),
+    vendas: () => r(sb.from('vendas').select('*').order('criado_em', { ascending: false }).limit(3000)),
+    repasses: () => r(sb.from('repasses').select('*').order('pago_em', { ascending: false }).limit(1000)),
+    vendedores: () => r(sb.from('vendedores').select('*').order('criado_em', { ascending: false })),
+    ranking: () => r(sb.rpc('ranking_mes')),
+    async salvarProduto(p) { const { id, criado_em, ...c } = p; return id ? r(sb.from('produtos').update(c).eq('id', id)) : r(sb.from('produtos').insert(c)); },
+    statusVendedor: (id, status) => r(sb.from('vendedores').update({ status, aprovado_em: status === 'ativo' ? new Date().toISOString() : null }).eq('user_id', id)),
+    perfil: (p) => r(sb.rpc('atualizar_perfil', { p })),
+    async registrarVenda(p, arquivo, uid) {
+      if (arquivo) { const ext = (arquivo.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 5); const path = `${uid}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`; const { error } = await sb.storage.from('comprovantes').upload(path, arquivo, { contentType: arquivo.type }); if (error) throw error; p.comprovante = path; }
+      return r(sb.rpc('registrar_venda', { p }));
+    },
+    cancelar: (id) => r(sb.rpc('cancelar_minha_venda', { p_id: id })),
+    decidir: (id, acao, valor, motivo) => r(sb.rpc('decidir_venda', { p_id: id, p_acao: acao, p_valor: valor ?? null, p_motivo: motivo ?? null })),
+    mensalidade: (id) => r(sb.rpc('registrar_mensalidade', { p_id: id })),
+    repasse: (vid, obs) => r(sb.rpc('registrar_repasse', { p_vendedor: vid, p_obs: obs || '' })),
+    async comprovante(path) { const { data, error } = await sb.storage.from('comprovantes').createSignedUrl(path, 600); if (error) throw error; return data.signedUrl; },
+    ouvir(cb) { const ch = sb.channel('tudo'); ['vendas', 'vendedores', 'repasses', 'produtos'].forEach((t) => ch.on('postgres_changes', { event: '*', schema: 'public', table: t }, (p) => cb(t, p))); ch.subscribe(); },
+    aoEntrarPorLink(cb) { sb.auth.onAuthStateChange((ev) => { if (ev === 'PASSWORD_RECOVERY') cb('senha'); }); },
+  });
+} else {
+  // ---------- demonstração: dados de exemplo só nesta tela ----------
+  const agora = Date.now(), dia = 864e5, uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()));
+  const D = { papel: 'dono', eu: 'v1' };
+  D.produtos = [
+    { id: 'p1', nome: 'Site', descricao: 'Site profissional para o negócio do cliente.', categoria: 'site', modo: 'link', cobranca: 'unica', preco: 700, comissao_tipo: 'fixo', comissao_valor: 200, comissao_recorrente: null, recorrencia_meses: null, link: '', ativo: true, ordem: 1 },
+    { id: 'p2', nome: 'Sistema personalizado', descricao: 'Sistema sob medida: agendamento, pedidos, painel de gestão e mais.', categoria: 'sistema', modo: 'link', cobranca: 'unica', preco: 1200, comissao_tipo: 'fixo', comissao_valor: 300, comissao_recorrente: null, recorrencia_meses: null, link: '', ativo: true, ordem: 2 },
+    { id: 'p3', nome: 'Social media', descricao: 'Gestão do Instagram do cliente. Cobrança mensal.', categoria: 'social', modo: 'link', cobranca: 'mensal', preco: 800, comissao_tipo: 'fixo', comissao_valor: 200, comissao_recorrente: 80, recorrencia_meses: 12, link: '', ativo: true, ordem: 3 },
+    { id: 'p4', nome: 'Agente de IA', descricao: 'Atendente com inteligência artificial. O cliente fala direto com os donos para montar a proposta.', categoria: 'ia', modo: 'indicacao', cobranca: 'unica', preco: null, comissao_tipo: 'percentual', comissao_valor: 15, comissao_recorrente: null, recorrencia_meses: null, link: '', ativo: true, ordem: 4 },
+    { id: 'p5', nome: 'Automações', descricao: 'Automações para o dia a dia do cliente. O cliente fala direto com os donos para montar a proposta.', categoria: 'automacao', modo: 'indicacao', cobranca: 'unica', preco: null, comissao_tipo: 'percentual', comissao_valor: 15, comissao_recorrente: null, recorrencia_meses: null, link: '', ativo: true, ordem: 5 },
+  ];
+  D.vendedores = [
+    { user_id: 'v1', codigo: 'EX1A2B', nome: 'Vendedor Exemplo 1', telefone: '47900000001', cidade: 'Balneário Camboriú', pix_tipo: 'telefone', pix_chave: '47900000001', status: 'ativo', criado_em: new Date(agora - 40 * dia).toISOString() },
+    { user_id: 'v2', codigo: 'EX3C4D', nome: 'Vendedora Exemplo 2', telefone: '47900000002', cidade: 'Itajaí', pix_tipo: 'cpf', pix_chave: '000.000.000-00', status: 'ativo', criado_em: new Date(agora - 30 * dia).toISOString() },
+    { user_id: 'v3', codigo: 'EX5E6F', nome: 'Vendedor Exemplo 3', telefone: '47900000003', cidade: 'Camboriú', pix_tipo: 'email', pix_chave: 'exemplo3@email.com', status: 'pendente', criado_em: new Date(agora - 1 * dia).toISOString() },
+  ];
+  const vd = (vid, pid, dias, status, extra = {}) => { const p = D.produtos.find((x) => x.id === pid); return { id: uid(), vendedor_id: vid, produto_id: pid, produto_nome: p.nome, categoria: p.categoria, tipo: p.modo === 'indicacao' ? 'indicacao' : 'venda', cobranca: p.cobranca, valor: p.modo === 'indicacao' ? null : p.preco, comissao: comissaoDe(p), cliente_nome: 'Cliente Exemplo', cliente_empresa: 'Empresa Exemplo', cliente_telefone: '47900001111', cliente_cidade: 'Balneário Camboriú', obs: '', comprovante: '', status, motivo: '', origem_id: null, repasse_id: null, criado_em: new Date(agora - dias * dia).toISOString(), ...extra }; };
+  D.repasses = [{ id: 'r1', vendedor_id: 'v1', valor: 400, qtd: 2, obs: '', pago_em: new Date(agora - 20 * dia).toISOString() }];
+  D.vendas = [vd('v1', 'p1', 25, 'confirmada', { repasse_id: 'r1' }), vd('v1', 'p1', 22, 'confirmada', { repasse_id: 'r1' }), vd('v1', 'p3', 3, 'confirmada'), vd('v1', 'p2', 1, 'confirmada'),
+    vd('v1', 'p1', 0.2, 'aguardando'), vd('v2', 'p1', 2, 'confirmada'), vd('v2', 'p4', 1, 'negociando'), vd('v2', 'p2', 0.1, 'aguardando'), vd('v1', 'p5', 5, 'aguardando'), vd('v2', 'p1', 8, 'recusada', { motivo: 'Pagamento não encontrado' })];
+  D.vendas.forEach((v, i) => { v.cliente_nome = 'Cliente Exemplo ' + (i + 1); });
+  const espera = (v) => new Promise((ok) => setTimeout(() => ok(structuredClone(v)), 120));
+  const falha = (c) => { throw new Error(c); };
+  const ouvintes = [];
+  const mudou = (t) => ouvintes.forEach((f) => f(t, {}));
+  Object.assign(API, {
+    demo: D,
+    async iniciar() {},
+    async sessao() { if (!D.logado) return null; if (D.papel === 'dono') return { tipo: 'dono', email: 'dono@exemplo', id: 'd1' }; const v = D.vendedores.find((x) => x.user_id === D.eu); return { tipo: 'vendedor', email: 'vendedor@exemplo', id: v.user_id, perfil: structuredClone(v) }; },
+    async entrar() { D.logado = true; }, async criarConta() { falha('Na demonstração, use os botões de exemplo abaixo.'); }, async cadastrar() {}, async sair() { D.logado = false; }, async esqueci() {}, async novaSenha() {},
+    produtos: () => espera(D.papel === 'dono' ? D.produtos : D.produtos.filter((p) => p.ativo)),
+    vendas: () => espera((D.papel === 'dono' ? D.vendas : D.vendas.filter((v) => v.vendedor_id === D.eu)).sort((a, b) => b.criado_em.localeCompare(a.criado_em))),
+    repasses: () => espera(D.papel === 'dono' ? D.repasses : D.repasses.filter((r) => r.vendedor_id === D.eu)),
+    vendedores: () => espera(D.vendedores),
+    async ranking() { const m = {}; D.vendas.filter((v) => v.status === 'confirmada' && v.tipo !== 'mensalidade' && doMes(v.criado_em)).forEach((v) => (m[v.vendedor_id] = (m[v.vendedor_id] || 0) + 1)); return Object.entries(m).sort((a, b) => b[1] - a[1]).map(([id, n], i) => ({ posicao: i + 1, nome: D.vendedores.find((x) => x.user_id === id).nome, vendas: n, eu: id === D.eu && D.papel !== 'dono' })); },
+    async salvarProduto(p) { if (p.id) Object.assign(D.produtos.find((x) => x.id === p.id), p); else D.produtos.push({ ...p, id: uid() }); mudou('produtos'); },
+    async statusVendedor(id, status) { D.vendedores.find((x) => x.user_id === id).status = status; mudou('vendedores'); },
+    async perfil(p) { Object.assign(D.vendedores.find((x) => x.user_id === D.eu), p); mudou('vendedores'); },
+    async registrarVenda(p) { const pr = D.produtos.find((x) => x.id === p.produto_id); const v = { id: uid(), vendedor_id: D.eu, produto_id: pr.id, produto_nome: pr.nome, categoria: pr.categoria, tipo: pr.modo === 'indicacao' ? 'indicacao' : 'venda', cobranca: pr.cobranca, valor: pr.modo === 'indicacao' ? null : pr.preco, comissao: comissaoDe(pr), cliente_nome: p.cliente_nome, cliente_empresa: p.cliente_empresa, cliente_telefone: dig(p.cliente_telefone), cliente_cidade: p.cliente_cidade, obs: p.obs, comprovante: '', status: 'aguardando', motivo: '', origem_id: null, repasse_id: null, criado_em: new Date().toISOString() }; D.vendas.push(v); mudou('vendas'); return { id: v.id }; },
+    async cancelar(id) { const v = D.vendas.find((x) => x.id === id); if (v.status !== 'aguardando') falha('nao_pode_cancelar'); v.status = 'cancelada'; mudou('vendas'); },
+    async decidir(id, acao, valor, motivo) { const v = D.vendas.find((x) => x.id === id); if (v.repasse_id) falha('ja_pago'); const pr = D.produtos.find((x) => x.id === v.produto_id);
+      if (acao === 'confirmar') { if (v.tipo === 'indicacao') { if (!(valor > 0)) falha('valor_obrigatorio'); v.valor = valor; v.comissao = pr.comissao_tipo === 'fixo' ? +pr.comissao_valor : Math.round(valor * pr.comissao_valor) / 100; } v.status = 'confirmada'; v.motivo = ''; }
+      else if (acao === 'recusar') { v.status = 'recusada'; v.motivo = motivo || ''; } else if (acao === 'perdida') { v.status = 'perdida'; v.motivo = motivo || ''; } else if (acao === 'negociando') v.status = 'negociando';
+      else if (acao === 'reabrir') { v.status = 'aguardando'; if (v.tipo === 'indicacao') { v.valor = null; v.comissao = null; } } v.decidido_em = new Date().toISOString(); mudou('vendas'); },
+    async mensalidade(id) { const v = D.vendas.find((x) => x.id === id), pr = D.produtos.find((x) => x.id === v.produto_id), n = D.vendas.filter((x) => x.origem_id === id).length; D.vendas.push({ ...structuredClone(v), id: uid(), tipo: 'mensalidade', origem_id: id, comissao: pr.recorrencia_meses && n >= pr.recorrencia_meses ? 0 : +pr.comissao_recorrente || 0, status: 'confirmada', repasse_id: null, obs: 'Mensalidade ' + (n + 2), criado_em: new Date().toISOString() }); mudou('vendas'); return { mensalidade: n + 2 }; },
+    async repasse(vid, obs) { const l = D.vendas.filter((v) => v.vendedor_id === vid && v.status === 'confirmada' && !v.repasse_id && v.comissao > 0); if (!l.length) falha('nada_a_pagar'); const r = { id: uid(), vendedor_id: vid, valor: l.reduce((s, v) => s + +v.comissao, 0), qtd: l.length, obs: obs || '', pago_em: new Date().toISOString() }; D.repasses.unshift(r); l.forEach((v) => (v.repasse_id = r.id)); mudou('repasses'); return r; },
+    async comprovante() { return ''; },
+    ouvir(cb) { ouvintes.push(cb); },
+    aoEntrarPorLink() {},
+  });
+}
+
+// =====================================================================
+// ESTADO
+// =====================================================================
+const S = { sessao: null, produtos: [], vendas: [], repasses: [], vendedores: [], ranking: [], aba: 'inicio', filtro: 'aguardando', busca: '', modoEntrada: 'entrar' };
+async function carregar() {
+  const dono = S.sessao.tipo === 'dono';
+  const [produtos, vendas, repasses, vendedores, ranking] = await Promise.all([API.produtos(), API.vendas(), API.repasses(), dono ? API.vendedores() : Promise.resolve([]), API.ranking().catch(() => [])]);
+  Object.assign(S, { produtos, vendas, repasses, vendedores, ranking });
+}
+let tRec = null;
+function recarregar() { clearTimeout(tRec); tRec = setTimeout(async () => { try {
+  if (S.sessao && S.sessao.tipo !== 'dono') { const antes = S.sessao, s = await API.sessao(); if (!s) return; S.sessao = s;
+    if (s.tipo !== 'vendedor' || s.perfil.status !== 'ativo') return telaEspera(s);
+    if (antes.tipo !== 'vendedor' || antes.perfil.status !== 'ativo') return iniciarApp(); }
+  await carregar(); desenhar(true); } catch (e) { console.error(e); } }, 250); }
+
+// ---------- cálculos ----------
+const somaCom = (l) => l.reduce((s, v) => s + (+v.comissao || 0), 0);
+const somaVal = (l) => l.reduce((s, v) => s + (+v.valor || 0), 0);
+const conf = (l) => l.filter((v) => v.status === 'confirmada');
+const aPagar = (l) => conf(l).filter((v) => !v.repasse_id && +v.comissao > 0);
+const nomeV = (id) => S.vendedores.find((x) => x.user_id === id)?.nome || 'Vendedor';
+
+// =====================================================================
+// TELA DE ENTRADA
+// =====================================================================
+function telaEntrada(msg = '', tipoMsg = 'erro') {
+  const m = S.modoEntrada;
+  const corpo = m === 'entrar' ? `
+      <label class="campo"><span>E-mail</span><input id="eEmail" type="email" autocomplete="username" inputmode="email"></label>
+      <label class="campo"><span>Senha</span><input id="eSenha" type="password" autocomplete="current-password"></label>
+      <button class="btn b-verde" style="width:100%" id="eOk">Entrar</button>
+      <button class="link-peq" id="eEsq">Esqueci minha senha</button>`
+    : m === 'cadastro' ? `
+      <div class="duas"><label class="campo"><span>Nome completo</span><input id="cNome" autocomplete="name"></label><label class="campo"><span>WhatsApp</span><input id="cTel" inputmode="tel" autocomplete="tel" placeholder="(47) 99999-9999"></label></div>
+      <label class="campo"><span>Cidade</span><input id="cCid" autocomplete="address-level2"></label>
+      <div class="duas"><label class="campo"><span>Tipo da chave Pix</span><select id="cPixT">${Object.entries(PIXN).map(([k, n]) => `<option value="${k}">${n}</option>`).join('')}</select></label><label class="campo"><span>Chave Pix</span><input id="cPix"></label></div>
+      <label class="campo"><span>E-mail</span><input id="eEmail" type="email" autocomplete="username" inputmode="email"></label>
+      <label class="campo"><span>Crie uma senha</span><input id="eSenha" type="password" autocomplete="new-password"><small>Mínimo de 8 caracteres.</small></label>
+      <button class="btn b-verde" style="width:100%" id="eOk">Quero ser vendedor</button>
+      <p style="font-size:12.5px;color:var(--cinza);margin-top:10px;text-align:center">Seu cadastro passa pela aprovação da AtlasHub. A chave Pix é para receber suas comissões.</p>`
+    : m === 'esqueci' ? `
+      <label class="campo"><span>E-mail</span><input id="eEmail" type="email" autocomplete="username"></label>
+      <button class="btn b-verde" style="width:100%" id="eOk">Enviar link por e-mail</button>
+      <button class="link-peq" id="eVolta">Voltar</button>`
+    : `<label class="campo"><span>Nova senha</span><input id="eSenha" type="password" autocomplete="new-password"><small>Mínimo de 8 caracteres.</small></label>
+      <button class="btn b-verde" style="width:100%" id="eOk">Salvar nova senha</button>`;
+  const tit = { entrar: ['Bem-vindo de volta', 'Entre para ver suas vendas e comissões.'], cadastro: ['Seja um vendedor', 'Venda sites, sistemas e social media e ganhe por cada venda.'], esqueci: ['Recuperar senha', 'Enviamos um link para você criar uma nova senha.'], senha: ['Criar nova senha', 'Escolha sua nova senha de acesso.'] }[m];
+  $('#raiz').innerHTML = `<div class="entrada">
+    <div class="e-arte"><svg class="globo ico" style="stroke:var(--menta);stroke-width:1"><use href="#i-globo"/></svg>
+      <img class="lg" src="logo-branca.png" alt="AtlasHub">
+      <div><h1>Venda com a gente.<br><span>Ganhe por cada site.</span></h1><p>Ofereça sites, sistemas personalizados, social media, agentes de IA e automações para estabelecimentos de qualquer nicho.</p></div>
+      <div class="e-lista"><div><i>✓</i>Link e QR Code de pagamento de cada produto</div><div><i>✓</i>Sua comissão aparece assim que a venda é confirmada</div><div><i>✓</i>Pagamento no seu Pix todos os dias até 23h59</div></div>
+    </div>
+    <div class="e-form"><form class="e-caixa entra" id="eForm" onsubmit="return false">
+      <img class="lg-m" src="logo.png" alt="AtlasHub">
+      ${m === 'entrar' || m === 'cadastro' ? `<div class="abas-e"><button type="button" data-m="entrar" class="${m === 'entrar' ? 'on' : ''}">Entrar</button><button type="button" data-m="cadastro" class="${m === 'cadastro' ? 'on' : ''}">Quero vender</button></div>` : ''}
+      <h2>${tit[0]}</h2><p>${tit[1]}</p>
+      ${msg ? `<div class="${tipoMsg === 'ok' ? 'ok-msg' : 'erro-msg'}">${esc(msg)}</div>` : ''}
+      ${corpo}
+      ${DEMO ? `<div class="aviso-demo"><b>Prévia em demonstração.</b> Os dados são exemplos e ficam só nesta tela.<div class="duas"><button type="button" class="btn b-escuro b-peq" data-demo="dono">Ver como dono</button><button type="button" class="btn b-linha b-peq" data-demo="vendedor">Ver como vendedor</button></div></div>` : ''}
+    </form></div></div>`;
+  $$('[data-m]').forEach((b) => (b.onclick = () => { S.modoEntrada = b.dataset.m; telaEntrada(); }));
+  $('#eEsq') && ($('#eEsq').onclick = () => { S.modoEntrada = 'esqueci'; telaEntrada(); });
+  $('#eVolta') && ($('#eVolta').onclick = () => { S.modoEntrada = 'entrar'; telaEntrada(); });
+  $$('[data-demo]').forEach((b) => (b.onclick = async () => { API.demo.papel = b.dataset.demo; API.demo.logado = true; await iniciarApp(); }));
+  $('#eOk').onclick = async () => {
+    const b = $('#eOk'), txt = b.textContent; b.disabled = true; b.textContent = 'Aguarde...';
+    try {
+      const email = ($('#eEmail')?.value || '').trim().toLowerCase(), senha = $('#eSenha')?.value || '';
+      if (m === 'entrar') { await API.entrar(email, senha); await iniciarApp(); }
+      else if (m === 'cadastro') {
+        const cad = { nome: $('#cNome').value.trim(), telefone: dig($('#cTel').value), cidade: $('#cCid').value.trim(), pix_tipo: $('#cPixT').value, pix_chave: $('#cPix').value.trim() };
+        if (cad.nome.length < 3) throw new Error('Informe seu nome completo.');
+        if (cad.telefone.length < 10) throw new Error('Informe seu WhatsApp com DDD.');
+        if (cad.pix_chave.length < 4) throw new Error('Informe sua chave Pix para receber as comissões.');
+        if (senha.length < 8) throw new Error('A senha precisa ter pelo menos 8 caracteres.');
+        const entrou = await API.criarConta(email, senha, cad);
+        if (entrou) await iniciarApp(); else { S.modoEntrada = 'entrar'; telaEntrada('Cadastro feito! Confirme seu e-mail pelo link que enviamos e depois entre.', 'ok'); }
+      } else if (m === 'esqueci') { await API.esqueci(email); S.modoEntrada = 'entrar'; telaEntrada('Se esse e-mail tiver cadastro, chegou um link para criar uma nova senha.', 'ok'); }
+      else { if (senha.length < 8) throw new Error('A senha precisa ter pelo menos 8 caracteres.'); await API.novaSenha(senha); history.replaceState(null, '', location.pathname); S.modoEntrada = 'entrar'; await iniciarApp(); }
+    } catch (e) { console.error(e); const t = e.message && !/[a-z]_[a-z]/.test(e.message) && /[A-ZÀ-Ú]/.test(e.message[0]) && !ERROS[e.message] && !/Invalid|registered|Password|Email|rate/.test(e.message) ? e.message : erroTxt(e); telaEntrada(t); }
+    finally { if (b.isConnected) { b.disabled = false; b.textContent = txt; } }
+  };
+}
+function telaEspera(s) {
+  const pend = s.perfil?.status === 'pendente', bloq = s.perfil?.status === 'bloqueado';
+  $('#raiz').innerHTML = `<div class="espera"><div class="card entra"><img src="logo.png" alt="AtlasHub">
+    <h2>${bloq ? 'Acesso desativado' : pend ? 'Cadastro em análise' : 'Complete seu cadastro'}</h2>
+    <p>${bloq ? 'Seu acesso de vendedor está desativado. Fale com a AtlasHub.' : pend ? 'Recebemos seu cadastro. Assim que a AtlasHub aprovar, seus produtos, links e QR Codes aparecem aqui.' : 'Não encontramos seus dados de vendedor. Saia e faça o cadastro de novo na aba Quero vender.'}</p>
+    <div class="m-acoes" style="justify-content:center"><button class="btn b-verde" id="atual">Atualizar</button><a class="btn b-zap" target="_blank" rel="noopener" href="${wa(DONOS_WHATS, 'Olá, Enrico! Fiz meu cadastro de vendedor na AtlasHub.')}"><svg class="ico"><use href="#i-wa"/></svg>Falar com a AtlasHub</a><button class="btn b-linha" id="sairE">Sair</button></div></div></div>`;
+  $('#atual').onclick = () => iniciarApp(); $('#sairE').onclick = sair;
+}
+async function sair() { try { await API.sair(); } catch {} S.sessao = null; S.modoEntrada = 'entrar'; telaEntrada(); }
+
+// =====================================================================
+// APP
+// =====================================================================
+const NAV_V = [['inicio', 'Início', 'i-casa'], ['produtos', 'Produtos', 'i-caixa'], ['vendas', 'Minhas vendas', 'i-lista'], ['pagamentos', 'Pagamentos', 'i-din'], ['perfil', 'Perfil', 'i-user']];
+const NAV_D = [['inicio', 'Painel', 'i-graf'], ['vendas', 'Vendas', 'i-lista'], ['pagar', 'Pagar', 'i-din'], ['mensal', 'Mensalidades', 'i-rep'], ['vendedores', 'Vendedores', 'i-gente'], ['produtos', 'Produtos', 'i-caixa']];
+function desenhar(silencioso) {
+  const s = S.sessao, dono = s.tipo === 'dono';
+  const NAV = dono ? NAV_D : NAV_V;
+  if (!NAV.some(([k]) => k === S.aba)) S.aba = 'inicio';
+  const pend = dono ? S.vendas.filter((v) => v.status === 'aguardando').length : 0;
+  const pendV = dono ? S.vendedores.filter((v) => v.status === 'pendente').length : 0;
+  const pagarN = dono ? new Set(aPagar(S.vendas).map((v) => v.vendedor_id)).size : 0;
+  const bdg = { vendas: pend, vendedores: pendV, pagar: pagarN };
+  const rolagem = scrollY;
+  $('#raiz').innerHTML = `<div class="app">
+    <aside class="lado"><div class="lg"><img src="logo-branca.png" alt="AtlasHub"></div><div class="papel">${dono ? 'Painel dos donos' : 'Área do vendedor'}</div>
+      ${NAV.map(([k, t, i]) => `<button class="nav ${S.aba === k ? 'on' : ''}" data-aba="${k}"><svg class="ico"><use href="#${i}"/></svg>${t}${bdg[k] ? `<span class="bdg">${bdg[k]}</span>` : ''}</button>`).join('')}
+      <div class="rodape"><button class="nav" id="sair"><svg class="ico"><use href="#i-sair"/></svg>Sair</button></div></aside>
+    <main class="main" id="main"><div class="topo-m"><img src="logo-branca.png" alt="AtlasHub"><button class="sair" id="sairM">Sair</button></div><div id="tela"></div></main></div>
+    ${DEMO ? `<div class="barra-demo"><span>Prévia</span><button data-ver="dono" class="${dono ? 'on' : ''}">Dono</button><button data-ver="vendedor" class="${!dono ? 'on' : ''}">Vendedor</button></div>` : ''}`;
+  $$('.nav[data-aba]').forEach((b) => (b.onclick = () => { S.aba = b.dataset.aba; S.busca = ''; desenhar(); scrollTo(0, 0); }));
+  $('#sair').onclick = sair; $('#sairM').onclick = sair;
+  $$('[data-ver]').forEach((b) => (b.onclick = async () => { API.demo.papel = b.dataset.ver; S.aba = 'inicio'; await iniciarApp(); }));
+  const T = $('#tela');
+  (dono ? { inicio: dPainel, vendas: dVendas, pagar: dPagar, mensal: dMensal, vendedores: dVendedores, produtos: dProdutos } : { inicio: vInicio, produtos: vProdutos, vendas: vVendas, pagamentos: vPagamentos, perfil: vPerfil })[S.aba](T);
+  if (!silencioso) $$('.card,.prod,.hero-v', T).forEach((el, i) => { el.classList.add('entra'); el.style.animationDelay = Math.min(i * 40, 320) + 'ms'; });
+  else scrollTo(0, rolagem);
+}
+const topo = (t, s, extra = '') => `<div class="topo"><div><h1>${t}</h1><small>${s}</small></div><div class="acoes">${extra}</div></div>`;
+const chip = (v) => v.repasse_id ? '<span class="chip st-pago">Paga</span>' : `<span class="chip st-${v.status}">${STN[v.status]}</span>`;
+const linhaVenda = (v, dono) => `<div class="item cl" data-venda="${v.id}"><div><b>${esc(v.cliente_empresa || v.cliente_nome)}</b><span class="sub">${esc(v.tipo === 'mensalidade' ? v.produto_nome + ' · ' + v.obs : v.produto_nome)}${dono ? ' · ' + esc(nomeV(v.vendedor_id)) : ''} · ${data(v.criado_em)}</span></div><div class="dir">${chip(v)}<div class="sub" style="margin-top:4px">${v.comissao != null ? (dono ? brl(v.valor) + ' · com. ' + brl(v.comissao) : '+ ' + brl(v.comissao)) : v.tipo === 'indicacao' ? 'Indicação' : ''}</div></div></div>`;
+function ligarVendas(r) { $$('[data-venda]', r).forEach((x) => (x.onclick = () => abrirVenda(x.dataset.venda))); }
+
+// ===================== VENDEDOR =====================
+function vInicio(T) {
+  const p = S.sessao.perfil, L = S.vendas, hoje = aPagar(L), receber = somaCom(hoje);
+  const aguard = L.filter((v) => v.status === 'aguardando' && v.tipo !== 'indicacao'), indic = L.filter((v) => v.tipo === 'indicacao' && ['aguardando', 'negociando'].includes(v.status));
+  const recebido = S.repasses.reduce((s, r) => s + +r.valor, 0), mes = conf(L).filter((v) => doMes(v.criado_em) && v.tipo !== 'mensalidade');
+  T.innerHTML = topo(`Olá, ${esc(p.nome.split(' ')[0])}!`, `Código de vendedor: ${p.codigo}`) + `
+    <div class="hero-v"><span>Você tem para receber</span><b>${brl(receber)}</b>
+      <p>${receber > 0 ? 'Esse valor vai para o seu Pix hoje, até 23h59.' : 'Assim que uma venda sua for confirmada, a comissão aparece aqui.'} Os pagamentos são enviados todos os dias à noite, antes da meia-noite, sempre que houver valor confirmado.</p>
+      <span class="pix">Pix: ${esc(PIXN[p.pix_tipo])} · ${esc(p.pix_chave || 'não informado')}</span></div>
+    <div class="grade g4">
+      <div class="card kpi"><span>Aguardando confirmação</span><b>${brl(somaCom(aguard))}</b><small>${aguard.length} venda${aguard.length === 1 ? '' : 's'}</small></div>
+      <div class="card kpi"><span>Vendas no mês</span><b>${mes.length}</b><small>${brl(somaCom(mes))} em comissões</small></div>
+      <div class="card kpi"><span>Já recebido</span><b>${brl(recebido)}</b><small>${S.repasses.length} pagamento${S.repasses.length === 1 ? '' : 's'}</small></div>
+      <div class="card kpi"><span>Indicações abertas</span><b>${indic.length}</b><small>agente de IA e automações</small></div>
+    </div>
+    <div class="grade g2" style="margin-top:14px">
+      <div class="card"><h3>Últimas vendas<button class="mais" data-ir="vendas">Ver todas →</button></h3><div class="lista">${L.slice(0, 5).map((v) => linhaVenda(v)).join('') || '<div class="vazio">Sua primeira venda vai aparecer aqui.</div>'}</div>
+        <button class="btn b-verde" style="width:100%;margin-top:12px" data-ir="produtos"><svg class="ico"><use href="#i-mais"/></svg>Registrar venda</button></div>
+      <div class="card"><h3>Ranking do mês</h3>${S.ranking.length ? S.ranking.map((r) => `<div class="rank ${r.eu ? 'eu' : ''}"><span class="pos">${r.posicao}º</span><b>${esc(r.nome)}${r.eu ? ' (você)' : ''}</b><span class="n">${r.vendas} venda${r.vendas === 1 ? '' : 's'}</span></div>`).join('') : '<div class="vazio">Ninguém pontuou este mês ainda. Saia na frente!</div>'}
+        <h3 style="margin-top:20px">Como funciona</h3><div class="passos"><div>Apresente o produto e mostre como ele ajuda o negócio.</div><div>O cliente paga pelo link ou QR Code do produto, que já leva o seu código.</div><div>Registre a venda aqui com o print do pagamento.</div><div>A AtlasHub confirma e a comissão entra em "Para receber".</div><div>Você recebe no Pix no mesmo dia, até 23h59.</div></div></div>
+    </div>`;
+  ligarVendas(T); $$('[data-ir]', T).forEach((b) => (b.onclick = () => { S.aba = b.dataset.ir; desenhar(); scrollTo(0, 0); }));
+}
+function cardProduto(p) {
+  const cod = S.sessao.perfil?.codigo || '', link = linkVendedor(p, cod), com = comissaoDe(p), ind = p.modo === 'indicacao';
+  return `<div class="prod"><div class="topo-p"><span class="tag"><svg class="ico" style="width:24px;height:24px"><use href="#${ICO[p.categoria] || 'i-caixa'}"/></svg></span><div><h3>${esc(p.nome)}</h3><div class="desc">${esc(p.descricao)}</div></div></div>
+    <div class="valores"><div><small>${ind ? 'Valor' : p.cobranca === 'mensal' ? 'Mensalidade' : 'Valor'}</small><b>${ind ? 'Sob proposta' : brl(p.preco) + (p.cobranca === 'mensal' ? '/mês' : '')}</b></div><div class="ganho"><small>Você ganha</small><b>${ind ? (p.comissao_tipo === 'fixo' ? brl(p.comissao_valor) : (+p.comissao_valor).toLocaleString('pt-BR') + '%') : brl(com)}</b></div></div>
+    ${p.cobranca === 'mensal' && +p.comissao_recorrente ? `<div class="rec">+ ${brl(p.comissao_recorrente)} por mês enquanto o cliente continuar${p.recorrencia_meses ? ` (até ${p.recorrencia_meses} meses)` : ''}</div>` : ''}
+    ${ind ? `<div class="rec">O cliente conversa direto com os donos da AtlasHub. Você ganha ${p.comissao_tipo === 'fixo' ? brl(p.comissao_valor) : (+p.comissao_valor).toLocaleString('pt-BR') + '% do valor fechado'}.</div>
+      <div class="bts"><a class="btn b-zap" target="_blank" rel="noopener" href="${wa('', `Olá! Para montar a proposta de ${p.nome}, fale direto com o Enrico, da AtlasHub, pelo WhatsApp: https://wa.me/${DONOS_WHATS}. Diga que veio pela indicação de ${S.sessao.perfil?.nome || ''}.`)}"><svg class="ico"><use href="#i-wa"/></svg>Passar contato</a><button class="btn b-verde" data-reg="${p.id}">Indicar cliente</button></div>`
+      : `${link ? '' : '<div class="sem-link">O link de pagamento deste produto ainda vai ser cadastrado.</div>'}
+      <div class="bts"><button class="btn b-escuro" data-qr="${p.id}" ${link ? '' : 'disabled'}><svg class="ico"><use href="#i-qr"/></svg>QR Code</button><button class="btn b-linha" data-copia="${p.id}" ${link ? '' : 'disabled'}><svg class="ico"><use href="#i-copia"/></svg>Copiar link</button>
+      <a class="btn b-zap ${link ? '' : 'off'}" ${link ? `target="_blank" rel="noopener" href="${wa('', `Olá! Segue o link para o pagamento de ${p.nome} da AtlasHub (${brl(p.preco)}${p.cobranca === 'mensal' ? ' por mês' : ''}): ${link}`)}"` : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}><svg class="ico"><use href="#i-wa"/></svg>Enviar link</a><button class="btn b-verde" data-reg="${p.id}"><svg class="ico"><use href="#i-mais"/></svg>Registrar venda</button></div>`}
+  </div>`;
+}
+function vProdutos(T) {
+  T.innerHTML = topo('Produtos', 'Links e QR Codes já levam o seu código de vendedor') + `<div class="grade g3">${S.produtos.map(cardProduto).join('') || '<div class="vazio">Nenhum produto disponível no momento.</div>'}</div>`;
+  $$('[data-qr]', T).forEach((b) => (b.onclick = () => abrirQR(S.produtos.find((p) => p.id === b.dataset.qr))));
+  $$('[data-copia]', T).forEach((b) => (b.onclick = () => copiar(linkVendedor(S.produtos.find((p) => p.id === b.dataset.copia), S.sessao.perfil.codigo), 'Link copiado')));
+  $$('[data-reg]', T).forEach((b) => (b.onclick = () => abrirRegistro(b.dataset.reg)));
+}
+function vVendas(T) {
+  const F = [['todas', 'Todas'], ['aguardando', 'Aguardando'], ['confirmada', 'Confirmadas'], ['indicacao', 'Indicações'], ['recusada', 'Recusadas']];
+  if (!F.some(([k]) => k === S.filtro)) S.filtro = 'todas';
+  const l = S.vendas.filter((v) => S.filtro === 'todas' || (S.filtro === 'indicacao' ? v.tipo === 'indicacao' : S.filtro === 'recusada' ? ['recusada', 'perdida', 'cancelada'].includes(v.status) : v.status === S.filtro));
+  T.innerHTML = topo('Minhas vendas', `${S.vendas.length} registro${S.vendas.length === 1 ? '' : 's'}`, `<button class="btn b-verde" data-ir="produtos"><svg class="ico"><use href="#i-mais"/></svg>Registrar venda</button>`) +
+    `<div class="filtros">${F.map(([k, t]) => `<button data-f="${k}" class="${S.filtro === k ? 'on' : ''}">${t}</button>`).join('')}</div><div class="card"><div class="lista">${l.map((v) => linhaVenda(v)).join('') || '<div class="vazio">Nada por aqui.</div>'}</div></div>`;
+  $$('[data-f]', T).forEach((b) => (b.onclick = () => { S.filtro = b.dataset.f; desenhar(); }));
+  $$('[data-ir]', T).forEach((b) => (b.onclick = () => { S.aba = b.dataset.ir; desenhar(); }));
+  ligarVendas(T);
+}
+function vPagamentos(T) {
+  const hoje = aPagar(S.vendas), p = S.sessao.perfil;
+  T.innerHTML = topo('Pagamentos', 'Comissões pagas no seu Pix') + `
+    <div class="hero-v"><span>Para receber hoje até 23h59</span><b>${brl(somaCom(hoje))}</b><p>${hoje.length ? `${hoje.length} venda${hoje.length === 1 ? '' : 's'} confirmada${hoje.length === 1 ? '' : 's'}. O valor cai no seu Pix ainda hoje.` : 'Nenhum valor confirmado esperando pagamento.'}</p><span class="pix">Pix: ${esc(PIXN[p.pix_tipo])} · ${esc(p.pix_chave || 'não informado')}</span></div>
+    <div class="card"><h3>Histórico</h3><div class="lista">${S.repasses.map((r) => `<div class="item"><div><b>${brl(r.valor)}</b><span class="sub">${r.qtd} venda${r.qtd === 1 ? '' : 's'} · pago em ${dataHora(r.pago_em)}${r.obs ? ' · ' + esc(r.obs) : ''}</span></div><div class="dir"><span class="chip st-pago">Pago</span></div></div>`).join('') || '<div class="vazio">Seu primeiro pagamento vai aparecer aqui.</div>'}</div></div>`;
+}
+function vPerfil(T) {
+  const p = S.sessao.perfil;
+  T.innerHTML = topo('Perfil', S.sessao.email) + `<div class="grade g2"><div class="card"><h3>Seus dados</h3>
+    <label class="campo"><span>Nome</span><input id="pNome" value="${esc(p.nome)}"></label><div class="duas"><label class="campo"><span>WhatsApp</span><input id="pTel" inputmode="tel" value="${esc(fone(p.telefone))}"></label><label class="campo"><span>Cidade</span><input id="pCid" value="${esc(p.cidade)}"></label></div>
+    <div class="duas"><label class="campo"><span>Tipo da chave Pix</span><select id="pPixT">${Object.entries(PIXN).map(([k, n]) => `<option value="${k}" ${p.pix_tipo === k ? 'selected' : ''}>${n}</option>`).join('')}</select></label><label class="campo"><span>Chave Pix</span><input id="pPix" value="${esc(p.pix_chave)}"></label></div>
+    <button class="btn b-verde" id="pSalvar">Salvar</button></div>
+    <div class="card"><h3>Seu código de vendedor</h3><p style="font-size:34px;font-weight:900;letter-spacing:.12em;color:var(--verde)">${p.codigo}</p><p style="color:var(--cinza);font-size:14px;margin-top:6px">Todos os links e QR Codes que você envia já levam esse código, para a venda ficar no seu nome.</p>
+      <h3 style="margin-top:20px">Dúvidas?</h3><a class="btn b-zap" target="_blank" rel="noopener" href="${wa(DONOS_WHATS, `Olá, Enrico! Sou ${p.nome}, vendedor da AtlasHub (código ${p.codigo}).`)}"><svg class="ico"><use href="#i-wa"/></svg>Falar com a AtlasHub</a></div></div>`;
+  $('#pSalvar').onclick = async () => { try { await API.perfil({ nome: $('#pNome').value.trim(), telefone: dig($('#pTel').value), cidade: $('#pCid').value.trim(), pix_tipo: $('#pPixT').value, pix_chave: $('#pPix').value.trim() }); S.sessao = await API.sessao(); toast('Salvo', 'Seus dados foram atualizados.'); desenhar(true); } catch (e) { toast('Ops', erroTxt(e)); } };
+}
+
+// ===================== DONOS =====================
+function dPainel(T) {
+  const V = S.vendas, C = conf(V), mesC = C.filter((v) => doMes(v.criado_em));
+  const fatMes = somaVal(mesC), comMes = somaCom(mesC), fatTot = somaVal(C), pagar = somaCom(aPagar(V)), pago = S.repasses.reduce((s, r) => s + +r.valor, 0);
+  const aguard = V.filter((v) => v.status === 'aguardando'), indic = V.filter((v) => v.tipo === 'indicacao' && ['aguardando', 'negociando'].includes(v.status));
+  const ativos = S.vendedores.filter((v) => v.status === 'ativo').length;
+  const mensais = C.filter((v) => v.cobranca === 'mensal' && v.tipo !== 'mensalidade').length;
+  const meses = [...Array(6)].map((_, i) => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - 5 + i); const l = C.filter((v) => doMes(v.criado_em, d)); return { n: MES[d.getMonth()], f: somaVal(l), c: somaCom(l) }; });
+  const max = Math.max(1, ...meses.map((m) => m.f));
+  const porV = S.vendedores.filter((v) => v.status !== 'pendente').map((ve) => { const l = V.filter((v) => v.vendedor_id === ve.user_id), c = conf(l); return { ve, n: c.filter((v) => v.tipo !== 'mensalidade').length, gerado: somaVal(c), com: somaCom(c), pagar: somaCom(aPagar(l)), pago: S.repasses.filter((r) => r.vendedor_id === ve.user_id).reduce((s, r) => s + +r.valor, 0) }; }).sort((a, b) => b.gerado - a.gerado);
+  const porP = {}; C.forEach((v) => { const k = v.produto_nome; (porP[k] ||= { n: 0, f: 0 }); if (v.tipo !== 'mensalidade') porP[k].n++; porP[k].f += +v.valor || 0; });
+  T.innerHTML = topo('Painel', `Atualizado agora · ${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}`) + `
+    <div class="grade g4">
+      <div class="card kpi dest"><span>Gerado no mês</span><b>${brl(fatMes)}</b><small>${mesC.filter((v) => v.tipo !== 'mensalidade').length} vendas confirmadas</small></div>
+      <div class="card kpi"><span>Fica para a AtlasHub (mês)</span><b>${brl(fatMes - comMes)}</b><small>depois de ${brl(comMes)} em comissões</small></div>
+      <div class="card kpi"><span>A pagar hoje até 23h59</span><b style="color:${pagar ? 'var(--ouro)' : 'inherit'}">${brl(pagar)}</b><small>${new Set(aPagar(V).map((v) => v.vendedor_id)).size} vendedor(es)</small></div>
+      <div class="card kpi"><span>Gerado no total</span><b>${brl(fatTot)}</b><small>${brl(pago)} já pagos em comissões</small></div>
+      <div class="card kpi"><span>Aguardando confirmação</span><b>${aguard.length}</b><small>vendas e indicações</small></div>
+      <div class="card kpi"><span>Indicações abertas</span><b>${indic.length}</b><small>IA e automações</small></div>
+      <div class="card kpi"><span>Clientes mensais</span><b>${mensais}</b><small>social media e planos</small></div>
+      <div class="card kpi"><span>Vendedores ativos</span><b>${ativos}</b><small>${S.vendedores.filter((v) => v.status === 'pendente').length} aguardando aprovação</small></div>
+    </div>
+    <div class="grade g2" style="margin-top:14px">
+      <div class="card"><h3>Últimos 6 meses</h3><div class="barras">${meses.map((m) => `<div class="col"><div class="pilha"><div class="b" style="height:${(m.f / max) * 100}%" title="Gerado ${brl(m.f)}"></div><div class="b c" style="height:${(m.c / max) * 100}%" title="Comissões ${brl(m.c)}"></div></div><small>${m.n}</small></div>`).join('')}</div><div class="legenda"><span><i style="background:var(--verde)"></i>Gerado</span><span><i style="background:var(--menta)"></i>Comissões</span></div></div>
+      <div class="card"><h3>Por produto</h3><div class="lista">${Object.entries(porP).sort((a, b) => b[1].f - a[1].f).map(([k, x]) => `<div class="item"><div><b>${esc(k)}</b><span class="sub">${x.n} venda${x.n === 1 ? '' : 's'}</span></div><div class="dir"><b>${brl(x.f)}</b></div></div>`).join('') || '<div class="vazio">Sem vendas confirmadas ainda.</div>'}</div></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h3>Por vendedor<button class="mais" data-ir="pagar">Pagar comissões →</button></h3><div class="tab-wrap"><table class="tab"><thead><tr><th>Vendedor</th><th class="num">Vendas</th><th class="num">Gerou</th><th class="num">Comissões</th><th class="num">A pagar</th><th class="num">Já pago</th></tr></thead><tbody>
+      ${porV.map((x) => `<tr><td><b>${esc(x.ve.nome)}</b>${x.ve.status === 'bloqueado' ? ' <span class="chip st-cancelada">desativado</span>' : ''}</td><td class="num">${x.n}</td><td class="num"><b>${brl(x.gerado)}</b></td><td class="num">${brl(x.com)}</td><td class="num" style="color:${x.pagar ? 'var(--ouro)' : 'inherit'};font-weight:800">${brl(x.pagar)}</td><td class="num">${brl(x.pago)}</td></tr>`).join('') || '<tr><td colspan="6"><div class="vazio">Nenhum vendedor aprovado ainda.</div></td></tr>'}
+    </tbody></table></div></div>`;
+  $$('[data-ir]', T).forEach((b) => (b.onclick = () => { S.aba = b.dataset.ir; desenhar(); }));
+}
+function dVendas(T) {
+  const F = [['aguardando', 'Para confirmar'], ['indicacao', 'Indicações'], ['confirmada', 'Confirmadas'], ['recusada', 'Recusadas'], ['todas', 'Todas']];
+  if (!F.some(([k]) => k === S.filtro)) S.filtro = 'aguardando';
+  const q = S.busca.toLowerCase();
+  const l = S.vendas.filter((v) => S.filtro === 'todas' || (S.filtro === 'indicacao' ? v.tipo === 'indicacao' && ['aguardando', 'negociando'].includes(v.status) : S.filtro === 'aguardando' ? v.status === 'aguardando' && v.tipo !== 'indicacao' : S.filtro === 'recusada' ? ['recusada', 'perdida', 'cancelada'].includes(v.status) : v.status === S.filtro))
+    .filter((v) => !q || [v.cliente_nome, v.cliente_empresa, v.produto_nome, nomeV(v.vendedor_id), v.cliente_telefone].join(' ').toLowerCase().includes(q));
+  T.innerHTML = topo('Vendas', 'Confira o pagamento e confirme para liberar a comissão') + `<div class="filtros">${F.map(([k, t]) => `<button data-f="${k}" class="${S.filtro === k ? 'on' : ''}">${t}</button>`).join('')}<input id="busca" placeholder="Buscar cliente, vendedor ou produto" value="${esc(S.busca)}"></div>
+    <div class="card"><div class="lista">${l.map((v) => linhaVenda(v, true)).join('') || '<div class="vazio">Nada por aqui.</div>'}</div></div>`;
+  $$('[data-f]', T).forEach((b) => (b.onclick = () => { S.filtro = b.dataset.f; desenhar(); }));
+  $('#busca').oninput = (e) => { S.busca = e.target.value; const p = e.target.selectionStart; desenhar(true); const i = $('#busca'); i.focus(); i.setSelectionRange(p, p); };
+  ligarVendas(T);
+}
+function dPagar(T) {
+  const grupos = {}; aPagar(S.vendas).forEach((v) => (grupos[v.vendedor_id] ||= []).push(v));
+  const lista = Object.entries(grupos).map(([id, l]) => ({ ve: S.vendedores.find((x) => x.user_id === id) || { nome: 'Vendedor', user_id: id, pix_tipo: '', pix_chave: '' }, l, total: somaCom(l) })).sort((a, b) => b.total - a.total);
+  T.innerHTML = topo('Pagar comissões', 'Os vendedores esperam o Pix todos os dias até 23h59') + `
+    <div class="hero-v"><span>Total para pagar hoje</span><b>${brl(lista.reduce((s, x) => s + x.total, 0))}</b><p>Faça o Pix para cada vendedor e toque em "Já paguei" para registrar. O vendedor vê o pagamento na hora.</p></div>
+    <div class="grade g2">${lista.map((x) => `<div class="card"><h3>${esc(x.ve.nome)}</h3><div class="det"><div><span>Valor</span><b style="font-size:20px;color:var(--verde)">${brl(x.total)}</b></div><div><span>Vendas</span><b>${x.l.length}</b></div><div><span>Pix (${esc(PIXN[x.ve.pix_tipo] || '')})</span><b>${esc(x.ve.pix_chave || 'não informado')}</b></div><div><span>WhatsApp</span><b>${esc(fone(x.ve.telefone || ''))}</b></div></div>
+      <div class="m-acoes"><button class="btn b-linha b-peq" data-pix="${esc(x.ve.pix_chave || '')}"><svg class="ico"><use href="#i-copia"/></svg>Copiar Pix</button><button class="btn b-verde b-peq" data-pagar="${x.ve.user_id}"><svg class="ico"><use href="#i-ok"/></svg>Já paguei ${brl(x.total)}</button></div></div>`).join('') || '<div class="vazio" style="grid-column:1/-1">Nenhuma comissão para pagar agora.</div>'}</div>
+    <div class="card" style="margin-top:14px"><h3>Pagamentos feitos</h3><div class="lista">${S.repasses.slice(0, 40).map((r) => `<div class="item"><div><b>${esc(nomeV(r.vendedor_id))}</b><span class="sub">${r.qtd} venda${r.qtd === 1 ? '' : 's'} · ${dataHora(r.pago_em)}${r.obs ? ' · ' + esc(r.obs) : ''}</span></div><div class="dir"><b>${brl(r.valor)}</b></div></div>`).join('') || '<div class="vazio">Nenhum pagamento registrado ainda.</div>'}</div></div>`;
+  $$('[data-pix]', T).forEach((b) => (b.onclick = () => copiar(b.dataset.pix, 'Chave Pix copiada')));
+  $$('[data-pagar]', T).forEach((b) => (b.onclick = () => { const x = lista.find((y) => y.ve.user_id === b.dataset.pagar); confirmar(`Registrar pagamento de ${brl(x.total)} para ${x.ve.nome}?`, 'Confirme que o Pix já foi enviado. Isso marca as comissões como pagas.', 'Sim, já paguei', async () => { await API.repasse(x.ve.user_id, ''); toast('Pagamento registrado', `${x.ve.nome} · ${brl(x.total)}`); await carregar(); desenhar(true); }); }));
+}
+function dMensal(T) {
+  const base = conf(S.vendas).filter((v) => v.cobranca === 'mensal' && v.tipo !== 'mensalidade');
+  T.innerHTML = topo('Mensalidades', 'Clientes de social media e planos mensais') + `<div class="card" style="margin-bottom:14px;font-size:14px;color:var(--cinza)">Quando o cliente pagar a mensalidade, toque em "Registrar mês pago". Se o produto tiver comissão mensal, ela entra para o vendedor automaticamente.</div>
+    <div class="card"><div class="lista">${base.map((v) => { const ms = S.vendas.filter((x) => x.origem_id === v.id), ult = ms.sort((a, b) => b.criado_em.localeCompare(a.criado_em))[0]; return `<div class="item"><div><b>${esc(v.cliente_empresa || v.cliente_nome)}</b><span class="sub">${esc(v.produto_nome)} · ${esc(nomeV(v.vendedor_id))} · desde ${data(v.criado_em)} · ${ms.length + 1} mês(es) pago(s)${ult ? ' · último ' + data(ult.criado_em) : ''}</span></div><div class="dir"><button class="btn b-verde b-peq" data-mes="${v.id}">Registrar mês pago</button></div></div>`; }).join('') || '<div class="vazio">Nenhum cliente mensal confirmado ainda.</div>'}</div></div>`;
+  $$('[data-mes]', T).forEach((b) => (b.onclick = () => { const v = S.vendas.find((x) => x.id === b.dataset.mes); confirmar(`Registrar mensalidade de ${v.cliente_empresa || v.cliente_nome}?`, 'Use quando o pagamento do mês tiver entrado.', 'Registrar', async () => { const r = await API.mensalidade(v.id); toast('Mensalidade registrada', `${v.cliente_empresa || v.cliente_nome} · mês ${r.mensalidade}`); await carregar(); desenhar(true); }); }));
+}
+function dVendedores(T) {
+  const grupo = (st) => S.vendedores.filter((v) => v.status === st);
+  const linha = (ve) => { const l = S.vendas.filter((v) => v.vendedor_id === ve.user_id), c = conf(l); return `<div class="item"><div><b>${esc(ve.nome)}</b><span class="sub">${esc(fone(ve.telefone))}${ve.cidade ? ' · ' + esc(ve.cidade) : ''} · código ${ve.codigo} · desde ${data(ve.criado_em)}${ve.status === 'ativo' ? ` · ${c.filter((v) => v.tipo !== 'mensalidade').length} vendas · ${brl(somaVal(c))}` : ''}</span></div><div class="dir m-acoes" style="justify-content:flex-end">
+    <a class="btn b-linha b-peq" target="_blank" rel="noopener" href="${wa(ve.telefone, `Olá, ${ve.nome.split(' ')[0]}! Aqui é da AtlasHub.`)}"><svg class="ico" style="width:16px;height:16px"><use href="#i-wa"/></svg></a>
+    ${ve.status === 'pendente' ? `<button class="btn b-verde b-peq" data-st="ativo" data-v="${ve.user_id}">Aprovar</button><button class="btn b-erro b-peq" data-st="bloqueado" data-v="${ve.user_id}">Recusar</button>` : ve.status === 'ativo' ? `<button class="btn b-erro b-peq" data-st="bloqueado" data-v="${ve.user_id}">Desativar</button>` : `<button class="btn b-linha b-peq" data-st="ativo" data-v="${ve.user_id}">Reativar</button>`}</div></div>`; };
+  T.innerHTML = topo('Vendedores', `${grupo('ativo').length} ativo(s)`) + `
+    ${grupo('pendente').length ? `<div class="card" style="margin-bottom:14px;border-color:var(--ouro)"><h3>Aguardando aprovação</h3><div class="lista">${grupo('pendente').map(linha).join('')}</div></div>` : ''}
+    <div class="card" style="margin-bottom:14px"><h3>Ativos</h3><div class="lista">${grupo('ativo').map(linha).join('') || '<div class="vazio">Nenhum vendedor ativo.</div>'}</div></div>
+    ${grupo('bloqueado').length ? `<div class="card"><h3>Desativados</h3><div class="lista">${grupo('bloqueado').map(linha).join('')}</div></div>` : ''}
+    <div class="card" style="margin-top:14px;font-size:14px;color:var(--cinza)">Para cadastrar um vendedor, envie o link deste sistema: ele toca em "Quero vender", preenche os dados e aparece aqui para você aprovar.</div>`;
+  $$('[data-st]', T).forEach((b) => (b.onclick = async () => { try { await API.statusVendedor(b.dataset.v, b.dataset.st); toast('Pronto', b.dataset.st === 'ativo' ? 'Vendedor ativo.' : 'Vendedor desativado.'); await carregar(); desenhar(true); } catch (e) { toast('Ops', erroTxt(e)); } }));
+}
+function dProdutos(T) {
+  T.innerHTML = topo('Produtos', 'Preços, comissões e links de pagamento', `<button class="btn b-verde" id="novoP"><svg class="ico"><use href="#i-mais"/></svg>Novo produto</button>`) +
+    `<div class="card" style="margin-bottom:14px;font-size:14px;color:var(--cinza)">Cole aqui o link de pagamento da Stripe de cada produto. O sistema acrescenta o código do vendedor no link (client_reference_id), então cada pagamento chega na Stripe com o vendedor identificado.</div>
+    <div class="card"><div class="tab-wrap"><table class="tab"><thead><tr><th>Produto</th><th>Tipo</th><th class="num">Preço</th><th class="num">Comissão</th><th>Link</th><th>Site</th><th></th></tr></thead><tbody>
+    ${S.produtos.map((p) => `<tr><td><b>${esc(p.nome)}</b><div class="sub" style="font-size:12px;color:var(--cinza)">${CATN[p.categoria]}</div></td><td>${p.modo === 'indicacao' ? 'Indicação' : p.cobranca === 'mensal' ? 'Mensal' : 'Venda única'}</td><td class="num">${p.preco == null ? '—' : brl(p.preco)}</td><td class="num">${p.comissao_tipo === 'fixo' ? brl(p.comissao_valor) : (+p.comissao_valor).toLocaleString('pt-BR') + '%'}${+p.comissao_recorrente ? `<div style="font-size:12px;color:var(--cinza)">+ ${brl(p.comissao_recorrente)}/mês</div>` : ''}</td><td>${p.modo === 'indicacao' ? '—' : p.link ? '<span class="chip st-confirmada">ok</span>' : '<span class="chip st-aguardando">falta</span>'}</td><td>${p.ativo ? 'Visível' : 'Oculto'}</td><td><button class="btn b-linha b-peq" data-ed="${p.id}">Editar</button></td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  $('#novoP').onclick = () => editarProduto(null);
+  $$('[data-ed]', T).forEach((b) => (b.onclick = () => editarProduto(S.produtos.find((p) => p.id === b.dataset.ed))));
+}
+
+// =====================================================================
+// MODAIS
+// =====================================================================
+const veu = $('#veu');
+function modal(html) { $('#modal').innerHTML = html; veu.classList.add('on'); $$('#modal [data-x]').forEach((b) => (b.onclick = fechar)); }
+function fechar() { veu.classList.remove('on'); }
+veu.addEventListener('click', (e) => { if (e.target === veu) fechar(); });
+addEventListener('keydown', (e) => { if (e.key === 'Escape') fechar(); });
+const cab = (t, s = '') => `<div class="m-topo"><div><h2>${t}</h2>${s ? `<small>${s}</small>` : ''}</div><button class="x" data-x aria-label="Fechar">×</button></div>`;
+function confirmar(t, s, ok, fn) {
+  modal(cab(t) + `<p style="color:var(--cinza);margin-bottom:16px">${esc(s)}</p><p class="erro-msg" id="cErro" hidden></p><div class="m-acoes"><button class="btn b-verde" id="cOk">${esc(ok)}</button><button class="btn b-linha" data-x>Cancelar</button></div>`);
+  $('#cOk').onclick = async () => { const b = $('#cOk'); b.disabled = true; try { await fn(); fechar(); } catch (e) { $('#cErro').hidden = false; $('#cErro').textContent = erroTxt(e); b.disabled = false; } };
+}
+function copiar(t, msg) { if (!t) return; (navigator.clipboard?.writeText(t) || Promise.reject()).then(() => toast('Pronto', msg)).catch(() => { const i = document.createElement('textarea'); i.value = t; document.body.appendChild(i); i.select(); try { document.execCommand('copy'); toast('Pronto', msg); } catch {} i.remove(); }); }
+function abrirQR(p) {
+  const link = linkVendedor(p, S.sessao.perfil.codigo);
+  let svg = '';
+  try { const q = qrcode(0, 'M'); q.addData(link); q.make(); svg = q.createSvgTag({ cellSize: 6, margin: 2, scalable: true }); } catch { svg = '<p>Não foi possível gerar o QR Code.</p>'; }
+  modal(cab(esc(p.nome), `${brl(p.preco)}${p.cobranca === 'mensal' ? ' por mês' : ''} · você ganha ${brl(comissaoDe(p))}`) + `<div class="qr"><div class="moldura">${svg}</div><p>Peça para o cliente apontar a câmera do celular. O pagamento já fica com o seu código (${S.sessao.perfil.codigo}).</p></div>
+    <div class="m-acoes"><button class="btn b-linha" id="qCop"><svg class="ico"><use href="#i-copia"/></svg>Copiar link</button><button class="btn b-verde" id="qReg"><svg class="ico"><use href="#i-mais"/></svg>Cliente pagou: registrar venda</button></div>`);
+  $('#qCop').onclick = () => copiar(link, 'Link copiado'); $('#qReg').onclick = () => abrirRegistro(p.id);
+}
+function abrirRegistro(pid) {
+  const p = S.produtos.find((x) => x.id === pid), ind = p.modo === 'indicacao';
+  modal(cab(ind ? 'Indicar cliente' : 'Registrar venda', `${esc(p.nome)}${ind ? '' : ' · ' + brl(p.preco) + ' · você ganha ' + brl(comissaoDe(p))}`) + `
+    <p class="erro-msg" id="rErro" hidden></p>
+    <div class="duas"><label class="campo"><span>Nome do cliente</span><input id="rNome" autocomplete="off"></label><label class="campo"><span>WhatsApp do cliente</span><input id="rTel" inputmode="tel" placeholder="(47) 99999-9999"></label></div>
+    <div class="duas"><label class="campo"><span>Estabelecimento</span><input id="rEmp" placeholder="Nome do negócio"></label><label class="campo"><span>Cidade</span><input id="rCid"></label></div>
+    ${ind ? '' : `<label class="arquivo" id="rArqL"><svg class="ico"><use href="#i-clip"/></svg><span id="rArqT">Anexar print do pagamento (recomendado)</span><input type="file" id="rArq" accept="image/*,application/pdf"></label><div style="height:12px"></div>`}
+    <label class="campo"><span>Observação (opcional)</span><textarea id="rObs" placeholder="${ind ? 'O que o cliente precisa? Melhor horário para falar com ele...' : 'Algo que a AtlasHub precise saber sobre o cliente'}"></textarea></label>
+    <button class="btn b-verde" style="width:100%" id="rOk">${ind ? 'Enviar indicação' : 'Registrar venda'}</button>`);
+  $('#rArq') && ($('#rArq').onchange = (e) => { const f = e.target.files[0]; $('#rArqT').textContent = f ? f.name : 'Anexar print do pagamento (recomendado)'; });
+  $('#rOk').onclick = async () => {
+    const b = $('#rOk'), err = $('#rErro'); err.hidden = true;
+    const dados = { produto_id: p.id, cliente_nome: $('#rNome').value.trim(), cliente_telefone: dig($('#rTel').value), cliente_empresa: $('#rEmp').value.trim(), cliente_cidade: $('#rCid').value.trim(), obs: $('#rObs').value.trim() };
+    const arq = $('#rArq')?.files[0];
+    if (dados.cliente_nome.length < 2) { err.hidden = false; err.textContent = 'Informe o nome do cliente.'; return; }
+    if (dados.cliente_telefone.length < 10) { err.hidden = false; err.textContent = 'Informe o WhatsApp do cliente com DDD.'; return; }
+    if (arq && arq.size > 5 * 1024 * 1024) { err.hidden = false; err.textContent = 'O arquivo precisa ter até 5 MB.'; return; }
+    b.disabled = true; b.textContent = 'Enviando...';
+    try { await API.registrarVenda(dados, arq, S.sessao.id); fechar(); toast(ind ? 'Indicação enviada' : 'Venda registrada', ind ? 'A AtlasHub vai falar com o cliente.' : 'Assim que for confirmada, a comissão entra para você.'); await carregar(); S.aba = 'vendas'; S.filtro = 'todas'; desenhar(); }
+    catch (e) { err.hidden = false; err.textContent = erroTxt(e); b.disabled = false; b.textContent = ind ? 'Enviar indicação' : 'Registrar venda'; }
+  };
+}
+async function abrirVenda(id) {
+  const v = S.vendas.find((x) => x.id === id); if (!v) return;
+  const dono = S.sessao.tipo === 'dono', ve = dono ? S.vendedores.find((x) => x.user_id === v.vendedor_id) : null, pago = !!v.repasse_id;
+  modal(cab(esc(v.cliente_empresa || v.cliente_nome), `${esc(v.produto_nome)} · registrado em ${dataHora(v.criado_em)}`) + `
+    <div style="margin-bottom:12px">${chip(v)}</div>
+    <div class="det">
+      <div><span>Cliente</span><b>${esc(v.cliente_nome)}</b></div><div><span>WhatsApp</span><b>${esc(fone(v.cliente_telefone))}</b></div>
+      ${v.cliente_cidade ? `<div><span>Cidade</span><b>${esc(v.cliente_cidade)}</b></div>` : ''}
+      <div><span>Valor</span><b>${v.valor != null ? brl(v.valor) + (v.cobranca === 'mensal' ? '/mês' : '') : 'A definir na proposta'}</b></div>
+      <div><span>Comissão</span><b style="color:var(--verde)">${v.comissao != null ? brl(v.comissao) : 'Definida quando fechar'}</b></div>
+      ${dono ? `<div><span>Vendedor</span><b>${esc(ve?.nome || '')} (${esc(ve?.codigo || '')})</b></div>` : ''}
+      ${v.obs ? `<div><span>Observação</span><b>${esc(v.obs)}</b></div>` : ''}${v.motivo ? `<div><span>Motivo</span><b>${esc(v.motivo)}</b></div>` : ''}
+    </div>
+    ${v.comprovante ? `<button class="btn b-linha" id="vComp" style="width:100%;margin-bottom:12px"><svg class="ico"><use href="#i-clip"/></svg>Ver comprovante</button>` : ''}
+    <p class="erro-msg" id="vErro" hidden></p>
+    <div class="m-acoes" id="vAcoes"></div>`);
+  const A = $('#vAcoes'), btn = (cls, txt, fn) => { const b = document.createElement('button'); b.className = 'btn ' + cls; b.textContent = txt; b.onclick = async () => { b.disabled = true; try { await fn(); } catch (e) { $('#vErro').hidden = false; $('#vErro').textContent = erroTxt(e); b.disabled = false; } }; A.appendChild(b); };
+  const linkZap = (txt, cls = 'b-zap') => { const a = document.createElement('a'); a.className = 'btn ' + cls; a.target = '_blank'; a.rel = 'noopener'; a.href = wa(v.cliente_telefone, txt); a.innerHTML = '<svg class="ico"><use href="#i-wa"/></svg>Falar com o cliente'; A.appendChild(a); };
+  const feito = async (msg) => { toast('Pronto', msg); await carregar(); fechar(); desenhar(true); };
+  $('#vComp') && ($('#vComp').onclick = async () => { try { const u = await API.comprovante(v.comprovante); if (u) open(u, '_blank', 'noopener'); else toast('Prévia', 'Na demonstração não há arquivo.'); } catch (e) { toast('Ops', erroTxt(e)); } });
+  if (dono && !pago) {
+    if (v.tipo === 'indicacao' && ['aguardando', 'negociando'].includes(v.status)) {
+      A.insertAdjacentHTML('beforebegin', `<label class="campo"><span>Valor fechado com o cliente (R$)</span><input id="vValor" inputmode="decimal" placeholder="Ex.: 1500"></label>`);
+      btn('b-verde', 'Fechou: confirmar', async () => { const n = num($('#vValor').value); await API.decidir(v.id, 'confirmar', n); await feito('Indicação fechada. Comissão liberada.'); });
+      if (v.status === 'aguardando') btn('b-linha', 'Em negociação', async () => { await API.decidir(v.id, 'negociando'); await feito('Marcada como em negociação.'); });
+      btn('b-erro', 'Não fechou', async () => { await API.decidir(v.id, 'perdida', null, 'Não fechou'); await feito('Indicação encerrada.'); });
+      linkZap(`Olá, ${v.cliente_nome.split(' ')[0]}! Aqui é o Enrico, da AtlasHub. Recebi sua indicação sobre ${v.produto_nome} e queria entender melhor o que você precisa.`);
+    } else if (v.status === 'aguardando') {
+      btn('b-verde', 'Pagamento conferido: confirmar', async () => { await API.decidir(v.id, 'confirmar'); await feito('Venda confirmada. Comissão liberada para pagamento.'); });
+      btn('b-erro', 'Recusar', async () => { const m = prompt('Motivo da recusa (o vendedor vai ver):', 'Pagamento não encontrado'); if (m === null) throw new Error('cancelado'); await API.decidir(v.id, 'recusar', null, m); await feito('Venda recusada.'); });
+    } else if (['confirmada', 'recusada', 'perdida'].includes(v.status)) {
+      btn('b-linha', 'Voltar para análise', async () => { await API.decidir(v.id, 'reabrir'); await feito('Venda voltou para análise.'); });
+    }
+    if (v.tipo !== 'indicacao') linkZap(`Olá, ${v.cliente_nome.split(' ')[0]}! Aqui é da AtlasHub. Recebemos sua compra de ${v.produto_nome} e vamos começar.`, 'b-linha');
+  } else if (!dono && v.status === 'aguardando') {
+    btn('b-erro', 'Cancelar registro', async () => { await API.cancelar(v.id); await feito('Registro cancelado.'); });
+  }
+  if (pago) A.insertAdjacentHTML('beforeend', '<span class="chip st-pago">Comissão já paga ao vendedor</span>');
+}
+function editarProduto(p) {
+  const n = !p; p = p || { nome: '', descricao: '', categoria: 'combo', modo: 'link', cobranca: 'unica', preco: '', comissao_tipo: 'fixo', comissao_valor: '', comissao_recorrente: '', recorrencia_meses: '', link: '', ativo: true, ordem: S.produtos.length + 1 };
+  const op = (o, sel) => Object.entries(o).map(([k, t]) => `<option value="${k}" ${sel === k ? 'selected' : ''}>${t}</option>`).join('');
+  modal(cab(n ? 'Novo produto' : 'Editar produto') + `<p class="erro-msg" id="pErro" hidden></p>
+    <label class="campo"><span>Nome</span><input id="eNome" value="${esc(p.nome)}" placeholder="Ex.: Combo Site + Social media"></label>
+    <label class="campo"><span>Descrição (aparece para o vendedor)</span><textarea id="eDesc">${esc(p.descricao)}</textarea></label>
+    <div class="duas"><label class="campo"><span>Categoria</span><select id="eCat">${op(CATN, p.categoria)}</select></label><label class="campo"><span>Como vende</span><select id="eModo">${op({ link: 'Link de pagamento', indicacao: 'Indicação (cliente fala com os donos)' }, p.modo)}</select></label></div>
+    <div class="duas"><label class="campo"><span>Cobrança</span><select id="eCob">${op({ unica: 'Única', mensal: 'Mensal' }, p.cobranca)}</select></label><label class="campo"><span>Preço (R$)</span><input id="ePreco" inputmode="decimal" value="${p.preco ?? ''}" placeholder="vazio = sob proposta"></label></div>
+    <div class="duas"><label class="campo"><span>Comissão</span><select id="eComT">${op({ fixo: 'Valor fixo (R$)', percentual: 'Percentual (%)' }, p.comissao_tipo)}</select></label><label class="campo"><span>Valor da comissão</span><input id="eCom" inputmode="decimal" value="${p.comissao_valor ?? ''}"></label></div>
+    <div class="duas"><label class="campo"><span>Comissão por mensalidade (R$)</span><input id="eRec" inputmode="decimal" value="${p.comissao_recorrente ?? ''}" placeholder="só para mensal"></label><label class="campo"><span>Por quantos meses</span><input id="eMeses" inputmode="numeric" value="${p.recorrencia_meses ?? ''}" placeholder="vazio = sempre"></label></div>
+    <label class="campo"><span>Link de pagamento (Stripe)</span><input id="eLink" value="${esc(p.link)}" placeholder="https://buy.stripe.com/..."><small>O código do vendedor é acrescentado sozinho em cada link e QR Code.</small></label>
+    <div class="duas"><label class="campo"><span>Ordem</span><input id="eOrd" inputmode="numeric" value="${p.ordem ?? 0}"></label><label class="campo"><span>Aparece para os vendedores</span><select id="eAtivo">${op({ sim: 'Sim', nao: 'Não' }, p.ativo ? 'sim' : 'nao')}</select></label></div>
+    <button class="btn b-verde" style="width:100%" id="eSalvar">Salvar produto</button>`);
+  $('#eSalvar').onclick = async () => {
+    const e = $('#pErro'); e.hidden = true;
+    const d = { ...(n ? {} : { id: p.id }), nome: $('#eNome').value.trim(), descricao: $('#eDesc').value.trim(), categoria: $('#eCat').value, modo: $('#eModo').value, cobranca: $('#eCob').value, preco: num($('#ePreco').value), comissao_tipo: $('#eComT').value, comissao_valor: num($('#eCom').value) ?? 0, comissao_recorrente: num($('#eRec').value), recorrencia_meses: num($('#eMeses').value) ? Math.round(num($('#eMeses').value)) : null, link: $('#eLink').value.trim(), ativo: $('#eAtivo').value === 'sim', ordem: Math.round(num($('#eOrd').value) || 0) };
+    if (d.nome.length < 2) { e.hidden = false; e.textContent = 'Dê um nome ao produto.'; return; }
+    if (d.link && !/^https:\/\//.test(d.link)) { e.hidden = false; e.textContent = 'O link precisa começar com https://'; return; }
+    if (d.modo === 'link' && d.preco == null) { e.hidden = false; e.textContent = 'Produto com link de pagamento precisa de preço.'; return; }
+    if (d.comissao_tipo === 'percentual' && d.comissao_valor > 100) { e.hidden = false; e.textContent = 'O percentual precisa ser até 100.'; return; }
+    try { await API.salvarProduto(d); fechar(); toast('Salvo', d.nome); await carregar(); desenhar(true); } catch (x) { e.hidden = false; e.textContent = erroTxt(x); }
+  };
+}
+
+// ---------- avisos ----------
+function toast(t, s) { const d = document.createElement('div'); d.innerHTML = `<b>${esc(t)}</b>${esc(s)}`; $('#toast').appendChild(d); setTimeout(() => d.remove(), 3800); while ($('#toast').children.length > 2) $('#toast').firstElementChild.remove(); }
+function plim() { try { const c = new (window.AudioContext || window.webkitAudioContext)(); [784, 1175].forEach((f, i) => { const o = c.createOscillator(), g = c.createGain(); o.frequency.value = f; g.gain.setValueAtTime(0, c.currentTime + i * .15); g.gain.linearRampToValueAtTime(.16, c.currentTime + i * .15 + .02); g.gain.exponentialRampToValueAtTime(.001, c.currentTime + i * .15 + .45); o.connect(g).connect(c.destination); o.start(c.currentTime + i * .15); o.stop(c.currentTime + i * .15 + .5); }); } catch {} }
+function aoMudar(tabela, p) {
+  const n = p && p.new, dono = S.sessao?.tipo === 'dono';
+  if (tabela === 'vendas' && p?.eventType === 'INSERT' && dono && n.tipo !== 'mensalidade') { toast(n.tipo === 'indicacao' ? 'Nova indicação' : 'Nova venda registrada', `${n.produto_nome} · ${n.cliente_empresa || n.cliente_nome}`); plim(); }
+  if (tabela === 'vendas' && p?.eventType === 'UPDATE' && !dono && p.old && n.status !== p.old.status) { if (n.status === 'confirmada') { toast('Venda confirmada!', `+ ${brl(n.comissao)} para receber hoje`); plim(); } else if (n.status === 'recusada') toast('Venda recusada', n.motivo || n.produto_nome); }
+  if (tabela === 'repasses' && p?.eventType === 'INSERT' && !dono) { toast('Pagamento enviado', `${brl(n.valor)} no seu Pix`); plim(); }
+  if (tabela === 'vendedores' && p?.eventType === 'INSERT' && dono) toast('Novo cadastro de vendedor', n.nome);
+  recarregar();
+}
+
+// =====================================================================
+// INÍCIO
+// =====================================================================
+let ouvindo = false;
+async function iniciarApp() {
+  try {
+    S.sessao = await API.sessao();
+    if (!S.sessao) return telaEntrada();
+    if (S.sessao.tipo === 'novo' || (S.sessao.tipo === 'vendedor' && S.sessao.perfil.status !== 'ativo')) { if (!ouvindo && !DEMO) { ouvindo = true; API.ouvir(aoMudar); } return telaEspera(S.sessao); }
+    await carregar();
+    if (!ouvindo) { ouvindo = true; API.ouvir(aoMudar); }
+    desenhar();
+  } catch (e) { console.error(e); telaEntrada(erroTxt(e)); }
+}
+(async () => {
+  try { await API.iniciar(); } catch (e) { $('#raiz').innerHTML = '<div class="carregando">Sem conexão. Confira a internet e recarregue a página.</div>'; return; }
+  API.aoEntrarPorLink(() => { S.modoEntrada = 'senha'; telaEntrada(); });
+  if (/type=recovery/.test(location.hash)) { S.modoEntrada = 'senha'; return telaEntrada(); }
+  iniciarApp();
+})();
+</script>
+</body>
+</html>
